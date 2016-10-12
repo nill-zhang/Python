@@ -15,11 +15,11 @@ waveList.close()
 for eachline in allLines:
     #获取音频文件全称
     wavName = os.path.basename(eachline)
-	#切分出想要的文件名
+    #切分出想要的文件名
     str = wavName[24:30]
     #str = eachline[86:92]
     print(str)
-	#将文件名和评测文本存放目录进行联结
+    #将文件名和评测文本存放目录进行联结
     pathName = os.path.dirname(paperDir)+'\\'+str+'txt'
     #pathName = '\\\\192.168.77.158\data\esee25\defect_detect\word\data\paper'+'\\'+str+'txt'
     desList.write(pathName+'\n')

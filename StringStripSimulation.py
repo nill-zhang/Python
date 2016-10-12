@@ -14,11 +14,11 @@ def strip_simulation (strToStrip,strToSearch=None):
 
 if __name__=="__main__":
     
-	print "Usage :  reStrip.py targetString [Pattern]"
-	if len(sys.argv[1:]) == 0:
-	    print "At least one target string to strip"
-	else:
-	    print strip_simulation(sys.argv[1],sys.argv[2])
+    print "Usage :  reStrip.py targetString [Pattern]"
+    if len(sys.argv[1:]) == 0:
+        print "At least one target string to strip"
+    else:
+        print strip_simulation(sys.argv[1],sys.argv[2])
 
-	
+    
 

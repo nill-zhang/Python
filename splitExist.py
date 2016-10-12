@@ -7,12 +7,12 @@ t =open('F:/wave.txt','r')
 exist = open('F:/exist.txt','w')
 notExist = open('F:/notExist.txt','w')
 for eachline in t.readlines():
-	s = eachline.strip()
-	if s != '':
-		if os.path.exists(s):
-			exist.write(s+'\n')
-		else:
-			notExist.write(s+'\n')
+    s = eachline.strip()
+    if s != '':
+        if os.path.exists(s):
+            exist.write(s+'\n')
+        else:
+            notExist.write(s+'\n')
 t.close()
 exist.close()
 notExist.close()

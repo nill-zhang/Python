@@ -9,14 +9,14 @@ t =open('E:/POI0510.scp','r')
 empty = open('E:/empty.txt','w')
 notEmpty = open('E:/notEmpty.txt','w')
 for eachline in t.readlines():
-	s = eachline.strip()
-	if s != '':
-		if os.path.isfile(s):
-			size = os.path.getsize(s)
-			if size ==0:
-				empty.write(s+'\n')
-			else:
-				notEmpty.write(s+'\n')
+    s = eachline.strip()
+    if s != '':
+        if os.path.isfile(s):
+            size = os.path.getsize(s)
+            if size ==0:
+                empty.write(s+'\n')
+            else:
+                notEmpty.write(s+'\n')
 t.close()
 empty.close()
 notEmpty.close()

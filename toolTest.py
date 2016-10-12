@@ -22,41 +22,41 @@ paramPaperTxtList = paramPaperSetTxt.readlines()
 #进行wave.txt的自动生成
 for j in range(1,9155,1):
     #生成wave.txt的一行
-	for i in range(0,14,1):
-	     #获得要生成的wave.txt第i列的参数文本位置
-		 currentWaveTxtDir = paramWaveTxtList[i]
-		 #去除位置字符串首尾的格式字符串，根据位置打开参数文本
-		 currentWaveParamTxtFile = open(currentWaveTxtDir.strip(),'r')
-		 #获取所有这个参数的可取值
-		 currentWaveTxtList = currentWaveParamTxtFile.readlines()
-		 #随机取一个参数值，写入到wave.txt的第i列
-		 itemWave = random.choice(currentWaveTxtList)
-		 if (i+1)%14 == 0:
-		     #一行14个参数生成完，换行
-			 waveList.write(itemWave.strip()+'\n')
-		 else:
-		     #一行未写完，一个参数一个参数的写，中间制表符分割
-		     waveList.write(itemWave.strip()+'\t')
-	#waveList.write('\n')
+    for i in range(0,14,1):
+         #获得要生成的wave.txt第i列的参数文本位置
+         currentWaveTxtDir = paramWaveTxtList[i]
+         #去除位置字符串首尾的格式字符串，根据位置打开参数文本
+         currentWaveParamTxtFile = open(currentWaveTxtDir.strip(),'r')
+         #获取所有这个参数的可取值
+         currentWaveTxtList = currentWaveParamTxtFile.readlines()
+         #随机取一个参数值，写入到wave.txt的第i列
+         itemWave = random.choice(currentWaveTxtList)
+         if (i+1)%14 == 0:
+             #一行14个参数生成完，换行
+             waveList.write(itemWave.strip()+'\n')
+         else:
+             #一行未写完，一个参数一个参数的写，中间制表符分割
+             waveList.write(itemWave.strip()+'\t')
+    #waveList.write('\n')
 #进行paper.txt的自动生成
 for l in range(1,9155,1):
     #生成paper.txt的一行
-	for k in range(0,2,1):
-	    #获得要生成的paper.txt的第k列的参数文本位置
-		currentPaperTxtDir = paramPaperTxtList[k]
-		#去除位置字符串首尾的空格等，并根据位置打开参数文本
-		currentPaperParamTxtFile = open(currentPaperTxtDir.strip(),'r')
-		#获得这个参数的所有可取的值
-		currentPaperTxtList = currentPaperParamTxtFile.readlines()
-		#随机取一个值，写入到paper.txt的第K列
-		itemPaper= random.choice(currentPaperTxtList)
-		if (k+1)%2 == 0:
-		     #一行两个参数写完，换行
-			 paperList.write(itemPaper.strip()+'\n')
-		else:
-		     #一行未写完，一个参数一个参数写，中间制表符分割
-		     paperList.write(itemPaper.strip()+'\t')
-	#paperList.write('\n')
+    for k in range(0,2,1):
+        #获得要生成的paper.txt的第k列的参数文本位置
+        currentPaperTxtDir = paramPaperTxtList[k]
+        #去除位置字符串首尾的空格等，并根据位置打开参数文本
+        currentPaperParamTxtFile = open(currentPaperTxtDir.strip(),'r')
+        #获得这个参数的所有可取的值
+        currentPaperTxtList = currentPaperParamTxtFile.readlines()
+        #随机取一个值，写入到paper.txt的第K列
+        itemPaper= random.choice(currentPaperTxtList)
+        if (k+1)%2 == 0:
+             #一行两个参数写完，换行
+             paperList.write(itemPaper.strip()+'\n')
+        else:
+             #一行未写完，一个参数一个参数写，中间制表符分割
+             paperList.write(itemPaper.strip()+'\t')
+    #paperList.write('\n')
 #paper.txt和wave.txt生成后，关闭文件
 paperList.close()
 waveList.close()
