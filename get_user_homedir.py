@@ -1,4 +1,8 @@
 #!/usr/bin/python
+# created by sfzhang @2016.10.19
+
+''' this program ask user's credentials and check database for his homedir'''
+
 from __future__ import print_function
 import crypt
 import getpass
