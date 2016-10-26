@@ -17,8 +17,5 @@ def bnfAnalysisXml():
 	lines = tt.readlines()
 	tt.close()
 	print(lines)
-	
-
-
 	f.close()
 
