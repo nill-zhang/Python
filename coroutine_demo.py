@@ -14,6 +14,40 @@ def calculate():
     except GeneratorExit:
         print "stopping calculating..."
 
+
+def decorate_grep(func):
+    print "before start,func is %r" % func
+
+    def start(*args, **kwargs):
+        print "args: %r , kwargs: %r" % (args, kwargs)
+        cor = func(*args, **kwargs)
+        cor.next()
+        return cor
+    print "after start, func is %r" % func
+    return start
+
+
+def decorate_addition(function, number):
+
+    def stop(*args, **kwargs):
+        print number+function(*args, **kwargs)
+    return stop
+
+
+@decorate_addition(addition, 8)
+def addition(x, y):
+    return x+y
+
+
+@decorate_grep
+def grep(pattern):
+    print "find pattern %s" % pattern
+    while True:
+        line = (yield)
+        if pattern in line:
+            print line
+
+
 if __name__ == "__main__":
     A = calculate()  # nothing was done at this stage
     print "after calling calculate"
@@ -23,4 +57,8 @@ if __name__ == "__main__":
         A.send(i)  # execute yield and loop back until the next yield statement
 
     A.close()
-
+    B = grep("python")
+    B.send("I like python, which is an excellent language")
+    B.send("what did you say??")
+    B.send("I said python is fantastic, I can not live without it")
+    total(4, 9)
