@@ -27,18 +27,6 @@ def decorate_grep(func):
     return start
 
 
-def decorate_addition(function, number):
-
-    def stop(*args, **kwargs):
-        print number+function(*args, **kwargs)
-    return stop
-
-
-@decorate_addition(addition, 8)
-def addition(x, y):
-    return x+y
-
-
 @decorate_grep
 def grep(pattern):
     print "find pattern %s" % pattern
@@ -61,4 +49,4 @@ if __name__ == "__main__":
     B.send("I like python, which is an excellent language")
     B.send("what did you say??")
     B.send("I said python is fantastic, I can not live without it")
-    total(4, 9)
+    addition(4, 9)
