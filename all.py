@@ -27,6 +27,7 @@ def count(a):
 
 def operate_on_key():
     source_list = ['sfzhang', 'xlyang', 'qshu', 'jchu', 'xlz']
+    # count must return, otherwise it won't work
     print "sorted: %r" % sorted(source_list, key=count)
     print "max: %s" % max(source_list, key=count)
     print "min: %s" % min(source_list, key=count)
