@@ -2,6 +2,7 @@
 # by sfzhang 2016.11.16
 import pprint
 import collections
+import types
 
 
 def count_occurrence_normal(fdir):
@@ -83,7 +84,6 @@ class dict_with_strkey(dict):
         # invocation of __contains__
         return key in self.keys() or str(key) in self.keys()
 
-
 def construct_dict():
     """ways to construct a dict"""
     dict_a = dict(([i, j] for i in range(1, 6) for j in 'abcde'))
@@ -98,6 +98,22 @@ def construct_dict():
 
     for dt in [dict_a, dict_b, dict_c, dict_d, dict_e, dict_f, dict_g]:
         pprint.pprint(dt)
+
+'''
+# types.MappingProxyType is provided since Python3.3
+# it is a wrapper class of dict type, it provides read-only dynamic
+# view of the original dict, changes can not made through it.
+
+def dict_proxy():
+    original_dict = dict(name='sfzhang', age=29, weight=140.00, original_dict='Asia')
+    proxy_dict = types.MappingProxyType
+    try:
+        proxy_dict['name'] = 'xlyang'
+    except TypeError:
+        print "assignment failed"
+    original_dict.__setitem__('DOB', '1985-10-13')
+    print proxy_dict['DOB']
+'''
 
 
 def is_hashable(param):
