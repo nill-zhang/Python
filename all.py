@@ -32,8 +32,9 @@ def operate_on_key():
     print "max: %s" % max(source_list, key=count)
     print "min: %s" % min(source_list, key=count)
 
-
 if __name__ == "__main__":
+
     operate_on_key()
+
 
 
