@@ -3,6 +3,7 @@
 
 from collections import namedtuple
 from collections import deque
+from collections import Counter
 
 
 def collections_namedtuple():
@@ -43,10 +44,26 @@ def collections_deque():
     deque_list.extendleft(['a', 'b', 'c', 'd'])
     print "deque_list: %s" % deque_list
 
+
+def collections_counter():
+    counter_dict1 = Counter('sfzhang is a very good guy')
+    counter_dict2 = Counter([i for i in range(2, 10)])
+    counter_dict3 = Counter(((i, j)for i, j in zip(['xlyang', 'lyzhang'],
+                                                   ('mother', 'daughter'))))
+    counter_dict4 = Counter((2, 2, 2, 4, 5, 42, 2, 0.23, 8.7, 4, 5, 0))
+    print "cdict1: %r" % repr(counter_dict1)
+    print "cdict2: %r" % repr(counter_dict2)
+    print counter_dict3
+    print "cdict4 most common: %r" % repr(counter_dict4.most_common(2))
+    counter_dict4.update([1 for i in xrange(10)])
+    print "cdict4 most common: %r" % repr(counter_dict4.most_common(2))
+
 if __name__ == "__main__":
     collections_deque()
     print "*"*90
     collections_namedtuple()
+    print "*" * 90
+    collections_counter()
 
 
 
