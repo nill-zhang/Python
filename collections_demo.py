@@ -23,10 +23,16 @@ def collections_namedtuple():
 
     print "person1._fields: ", person1._fields
     c1 = person1._make(['lyzhang', 2, 'Female', 10])
-    print "c1: ", c1
+    print "length: %d" % len(c1), c1
     print "c1._asdict()['name']: ", c1._asdict()['name']
-    c1._replace(name='xxxxx')  # this one seems doesn't work
-    print "c1: ", c1
+    name, _, _, _, = c1  # namedTuple also support unpacking
+    print "name is: %s" % c1.name
+    d1 = c1._replace(name='xxxxx')  # return a new namedtuple object with a different field name
+    print "build a new named tuple from c1 with a new name: ", d1
+    try:
+        d1.name = "another guy"
+    except AttributeError:
+        print "can not change a named tuple"
 
 
 def collections_deque():
