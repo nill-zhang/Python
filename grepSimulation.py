@@ -1,6 +1,8 @@
 #! python27
 from __future__ import print_function
-import re,os,sys
+import re
+import os
+import sys
 # class colors:
 # '''Colors class:
     # reset all colors with colors.reset
@@ -44,17 +46,18 @@ import re,os,sys
         # cyan='\033[46m'
         # lightgrey='\033[47m'
 
-def search_text(directory,regex):
+
+def search_text(directory, regex):
     if not os.path.exists(os.path.abspath(directory)):
-        print (directory+" does not exist!")
+        print(directory+" does not exist!")
     else:
-        user_pattern = re.compile(r'('+regex+')',re.S)        
+        user_pattern = re.compile(r'('+regex+')', re.S)
         for item in os.walk(directory):            
-            if item[2] == []:
+            if not item[2]:
                 continue
             else:
                 for each_file in item[2]:                 
-                    file_obj = open(os.path.join(item[0],each_file),'r')
+                    file_obj = open(os.path.join(item[0], each_file), 'r')
                     lines = file_obj.readlines()
                     flag = 0 #determine filename which contains successful matches 
                              #is printed or not,if not print, only once
@@ -80,16 +83,17 @@ def search_text(directory,regex):
                     for line_number in range(len(lines)):
                         if user_pattern.search(lines[line_number]):
                             if not flag: 
-                                print (os.path.join(item[0],each_file).center(80,'*'))
+                                print(os.path.join(item[0], each_file).center(80, '*'))
                                 flag = 1                          
-                            print (str(line_number+1),\
-                            user_pattern.sub(r"\033[91m\1\033[00m",lines[line_number].strip(' ')),sep=":",end="")
+                            print(str(line_number+1),
+                                  user_pattern.sub(r"\033[91m\1\033[00m",
+                                  lines[line_number].strip(' ')),
+                                  sep=":",
+                                  end="")
                         else:
                             continue
-                            
-                            
                     file_obj.close()
 
 if __name__ == "__main__":
     
-    search_text(sys.argv[1],sys.argv[2])
+    search_text(sys.argv[1], sys.argv[2])
