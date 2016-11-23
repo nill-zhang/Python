@@ -53,7 +53,7 @@ def get_data():
                   repr(stock_item['price']).ljust(20),
                   sep='\t')
 
-        # An exception will be raised here, which will be catched in the main function
+        # An exception will be raised here, which will be caught in the main function
         nonsense = record_dict["age"]/0
         print(nonsense)
 
@@ -65,5 +65,5 @@ def get_data():
 if __name__ == "__main__":
     try:
         get_data()
-    except Exception as e:
-        print("Exception encountered in get_data()", e)
+    except ZeroDivisionError as e:
+        print("ZeroDivisionError encountered in get_data()", e)
