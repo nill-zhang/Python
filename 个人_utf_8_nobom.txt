@@ -1,29 +1,18 @@
-{"name" : "张诺"
-,
-  "age" : 30
-, 
-  "company" : "IFLYTEK"
-,
-  "address" : "404-55 Humberline Drive"
-,
-  "weight" : 72
- ,
-  "Date of Birth" : "1988-10-13"
- ,
-  "Origin" : "China"
- ,
-  "Spouse" : "张峰"
- ,
-  "height" : 174
- ,
-  "degree" : "Bachelor's Degree"
- ,
+{"name" : "张诺",
+  "age" : 30, 
+  "company" : "IFLYTEK",
+  "address" : "404-55 Humberline Drive",
+  "weight" : 72 ,
+  "Date of Birth" : "1988-10-13",
+  "Origin" : "China",
+  "Spouse" : "张兰",
+  "height" : 174,
+  "degree" : "Bachelor's Degree",
   "University" : ["Heifei University of Technology",
 
                  "Anhui University of Finance and Economics",
 
-                 "George Brown College"]
-,
+                 "George Brown College"],
   "stocks" : [{"name" : "Apple", "price" : 110.81, "country" : "US", "sector" : "Tech", "holding" : 1000},
              
               {"name" : "Alphabet", "price" : 774.65 , "country" : "US", "sector" : "Tech", "holding" : 1000},
