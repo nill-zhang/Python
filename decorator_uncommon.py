@@ -5,6 +5,7 @@ import time
 
 
 def clock_it(func):
+    @functools.wraps(func)
     def wrapper(*args, **kwargs):
         name = func.__name__
         start_time = time.perf_counter()
