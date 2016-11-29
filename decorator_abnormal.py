@@ -9,7 +9,8 @@ def register(func):
     # note1:
     # a wrapper function definition inside a decorator
     # is not necessary, as long as the decorator return a function
-    # object
+    # object, so try imaging all the stuff you can do with argument function object
+    # inside a decorator, before you return a function object
     #
     # note2:
     # decorators are run when the modules where they were defined
