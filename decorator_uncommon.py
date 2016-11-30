@@ -21,7 +21,8 @@ def clock_it(func):
         return result
     return wrapper
 
-
+# note that the decorator function must already defined before
+# you can use it
 @clock_it
 def factorial(num):
     if num < 2:
