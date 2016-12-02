@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # by sfzhang 2016.11.26
 from collections import namedtuple
-import os
 
 
 class GradeBook(object):
