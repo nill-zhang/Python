@@ -29,7 +29,8 @@ class CoordinateSlots(object):
     # if a class defines __slots__, all the created instance will
     # share __slots__ instead of have a per-instance __dict__
     # it defines the immutable attributes instances of this class should
-    # have
+    # have, if you want to keep inherited attributes you also should
+    # define those in __slots__, otherwise, it ignores them
     __slots__ = ("__horizontal", "__vertical")
 
     def __init__(self, x, y):
