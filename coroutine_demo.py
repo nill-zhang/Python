@@ -6,42 +6,44 @@ def calculate():
     total = 0
     try:
         while True:
-            print "before yield"
+            print("before yield")
             n = (yield)
-            print "after yield"
+            print("after yield")
             total += n
-            print "total is %d" % total
+            print("total is %d" % total)
     except GeneratorExit:
-        print "stopping calculating..."
+        print("stopping calculating...")
 
 
 def decorate_grep(func):
-    print "before start,func is %r" % func
+    print("before start,func is %r" % func)
 
     def start(*args, **kwargs):
-        print "args: %r , kwargs: %r" % (args, kwargs)
+        print("args: %r , kwargs: %r" % (args, kwargs))
         cor = func(*args, **kwargs)
-        cor.next()
+
+        # for python2.7, you can use cor.next() directly
+        cor.__next__()
         return cor
-    print "after start, func is %r" % func
+    print("after start, func is %r" % func)
     return start
 
 
 @decorate_grep
 def grep(pattern):
-    print "find pattern %s" % pattern
+    print("find pattern %s" % pattern)
     while True:
         line = (yield)
         if pattern in line:
-            print line
+            print(line)
 
 
 if __name__ == "__main__":
     A = calculate()  # nothing was done at this stage
-    print "after calling calculate"
-    A.next()  # execute until the first yield statement
-    print "after calling A.next()"
-    for i in xrange(7):
+    print("after calling calculate")
+    A.__next__()  # execute until the first yield statement
+    print("after calling A.next()")
+    for i in range(7):
         A.send(i)  # execute yield and loop back until the next yield statement
 
     A.close()
@@ -49,4 +51,3 @@ if __name__ == "__main__":
     B.send("I like python, which is an excellent language")
     B.send("what did you say??")
     B.send("I said python is fantastic, I can not live without it")
-    addition(4, 9)
