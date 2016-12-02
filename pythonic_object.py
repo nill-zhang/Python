@@ -14,8 +14,9 @@ class Vector(object):
         return (item for item in (self.horizontal, self.vertical))
 
     def __repr__(self):
+        # you can also use type(self).__name__
         return "%s(%r,%r)" % (self.__class__.__name__, self.horizontal, self.vertical)
-        #
+
         # maximum recursion depth exceeded, we can not use repr, because repr will call the
         # instance's __repr__, which will cause infinite recursion
 
@@ -34,6 +35,7 @@ class Vector(object):
         return math.sqrt(self.horizontal ** 2 + self.vertical ** 2)
 
     def __add__(self, other):
+        # you can also use type(self)
         return self.__class__(self.horizontal + other.horizontal, self.vertical + other.vertical)
 
     def __bool__(self):
@@ -65,6 +67,7 @@ def test_vector():
     triangle_d = eval(repr(triangle_c))
     my_print("triangle_d:", "%r" % triangle_d)
     my_print("abs(triangle_d):", "%r" % abs(triangle_d))
+    print(type(triangle_d)(9, 15))
 
 if __name__ == "__main__":
     test_vector()
