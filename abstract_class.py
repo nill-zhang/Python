@@ -108,12 +108,14 @@ class LotteryBlower(Bingo):
         return tuple(sorted(self.items))
 
 
+# register this class to abc Bingo
 @Bingo.register
 class BingoVirtual(list):
     """A virtual subclass"""
     def pick(self):
         if self:
-            self.pop()
+            position = random.SystemRandom().randrange(len(self))
+            return self.pop(position)
         else:
             raise LookupError("no items in %r" % self)
 
@@ -128,9 +130,6 @@ class BingoVirtual(list):
 
 
 def test_bingo():
-    pass
-
-if __name__ == "__main__":
     try:
         flawed_instance = Fake_SubClass()
     except TypeError:
@@ -140,5 +139,18 @@ if __name__ == "__main__":
     # BingoVirtual does not inherit any attributes and methods from Bingo,
     # so you can not find it in Bingo.__subclasses__(),
     print(list(Bingo._abc_registry))
+
+    a_list = BingoVirtual((i for i in range(10)))
+    print(a_list.pick())
+    print(a_list)
+    print(isinstance(a_list, Bingo))
+    print(issubclass(BingoVirtual, Bingo))
+    # because BingoVirtual doesn't inherit anything from Bingo
+    # method resolution order will not try to look methods in
+    # Bingo
+    print(BingoVirtual.__mro__)
+
+if __name__ == "__main__":
+    test_bingo()
 
 
