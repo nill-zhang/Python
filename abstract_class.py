@@ -2,6 +2,8 @@
 # by sfzhang 2016.12.04
 import abc
 import random
+import doctest
+
 
 # for python3 plus and before version 3.4
 # class Bingo(metaclass=abc.ABCMeta)
@@ -91,7 +93,7 @@ class LotteryBlower(Bingo):
     def pick(self):
         try:
             # you need to catch IndexError if you use the commented alternate
-            # item_index = self.random.randint(range(len(self.items)))
+            # item_index = self.random.randint(0,len(self.items))
             # self.items.pop(item_index)
             item = self.random.choice(self.items)
             self.items.remove(item)
@@ -106,7 +108,26 @@ class LotteryBlower(Bingo):
         return tuple(sorted(self.items))
 
 
-class BingoVirtual(object):
+@Bingo.register
+class BingoVirtual(list):
+    """A virtual subclass"""
+    def pick(self):
+        if self:
+            self.pop()
+        else:
+            raise LookupError("no items in %r" % self)
+
+    # a class attribute set to list.extend
+    load = list.extend
+
+    def loaded(self):
+        return bool(self)
+
+    def inspect(self):
+        return tuple(sorted(self))
+
+
+def test_bingo():
     pass
 
 if __name__ == "__main__":
@@ -114,3 +135,10 @@ if __name__ == "__main__":
         flawed_instance = Fake_SubClass()
     except TypeError:
         print("can not instantiate a new instance of Fake_SubClass")
+
+    print(Bingo.__subclasses__())
+    # BingoVirtual does not inherit any attributes and methods from Bingo,
+    # so you can not find it in Bingo.__subclasses__(),
+    print(list(Bingo._abc_registry))
+
+
