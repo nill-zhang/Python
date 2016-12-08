@@ -2,7 +2,6 @@
 # by sfzhang 2016.12.04
 import abc
 import random
-import doctest
 
 
 # for python3 plus and before version 3.4
