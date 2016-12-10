@@ -28,7 +28,7 @@ class D(B, C):
         self.pong()
         super().ping()  # delegate method call to superclass
         super().pong()  # according to mro, this will call class B's pong method
-        C.pong(self)  # explicitly delegate method call to superclass C
+        C.pong(self)  # explicitly delegate method call to superclass C by bypassing mro
 
 
 class E(C, B):
@@ -43,6 +43,7 @@ class E(C, B):
         super().ping()
         super().pong()
         C.pong(self)
+
 
 def print_mro(cls):
 
@@ -63,4 +64,7 @@ if __name__ == "__main__":
     e.pingpong()
     print(D.__dict__)
     print_mro(tkinter.Text)
+    print_mro("fefef")
+    print(dir(d))
+    print(dir(B))
 
