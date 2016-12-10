@@ -149,7 +149,36 @@ def test_bingo():
     # Bingo
     print(BingoVirtual.__mro__)
 
+
+def test_subclasshook():
+    import collections
+
+    class A(object):
+        """ A class satisfying subclasshook of collections.Sized"""
+        def __len__(self):
+            return 2
+
+    class B(object):
+        """ A class satisfying subclasshook of collections.Iterator"""
+        def __iter__(self):
+            return 222
+
+        def __next__(self):
+            return 22222
+    a = A()
+    b = B()
+    # in our scenario, we didn't inherit, nor did we
+    # register our defined class to abc
+    # we just implement some abstract methods that
+    # can be checked in those abc's __subclasshook__
+    # then we also subclass our classes to abcs
+    print(issubclass(A, collections.Sized))
+    print(isinstance(a, collections.Sized))
+    print(issubclass(B, collections.Iterator))
+    print(isinstance(b, collections.Iterator))
+
 if __name__ == "__main__":
     test_bingo()
+    test_subclasshook()
 
 
