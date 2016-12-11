@@ -20,6 +20,7 @@ class Mirror(object):
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         sys.stdout.write = self.original_write
+        # only handle NameError exception for with statement
         if exc_type is NameError:
             print("An NameError happened")
             return True
@@ -49,6 +50,9 @@ def test_class_mirror():
         raise NameError("Raising an NameError before we finish")
     print(comment)
 
+    # because context manager object's exit method doesn't
+    # handle exceptions other than NameError, an Index Error
+    # generated in with scope will be propagated to caller
     try:
         with Mirror("sfzhang is also a skilled guy") as another_comment:
             print("start printing....")
