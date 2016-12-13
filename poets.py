@@ -7,9 +7,11 @@ from io import BytesIO
 import re
 import requests
 import os
+import shutil
+import sys
 
 
-def get_file_url(website_url):
+def generate_file_url(website_url):
     page = requests.get(website_url)
     tree = html.fromstring(page.content)
     pattern = re.compile(r"txt|zip", re.I)
@@ -30,21 +32,59 @@ def open_file(file_url):
         return file
 
 
-def generate_poem_info():
+def generate_poem_info(input_str):
     # poem_pattern =re.compile(r">.+(?=>)", re.DOTALL)
     # poem_pattern =re.compile(r">.+?(?=>)", re.DOTALL)
     poem_pattern = re.compile(r">(.+?)ZZ(.*?)\r\n.+?(?=>)", re.DOTALL)
-    for i in get_file_url("http://www.sczh.com/scdown.htm"):
+    for each_match in re.finditer(poem_pattern, input_str):
+        poet_name = each_match.group(1).strip()
+        poet_author = each_match.group(2).strip()
+        poet_content = each_match.group()
+        yield poet_name, poet_author, poet_content
+
+
+def generate_gbk_str():
+    for i in generate_file_url("http://www.sczh.com/scdown.htm"):
         with open_file(i) as file:
-            gbk_str = file.read().decode("gbk")
-            for each_match in re.finditer(poem_pattern, gbk_str):
-                poet_name = each_match.group(1).strip()
-                poet_author = each_match.group(2).strip()
-                yield poet_name, poet_author, each_match.group()
+            try:
+                gbk_str = file.read().decode("gbk")
+            except UnicodeDecodeError:
+                gbk_str = file.read().decode("gb2312")
+            finally:
+                yield gbk_str
+
+
+def generate_persons_name():
+    for i in generate_gbk_str():
+        file_characters_set = str_to_set(i)
+        while file_characters_set:
+            # one for display, one for output
+            a_name = chr(0x5f20) + file_characters_set.pop()
+            print(a_name, end='\t\t\t')
+            try:
+                if input("You like the name?  "):
+                    yield a_name
+            except EOFError:
+                print("\n" + "*" * 189)
+                raise StopIteration
+            sys.stdout.write("\x1b[F")
+        # for l, m, n in generate_poem_info(i):
+
+
+def print_name():
+    term_size = shutil.get_terminal_size().columns
+    print("*"+" ".join(generate_persons_name()).center(term_size-2)+"*")
+    print("*" * term_size)
+
+
+def str_to_set(input_str):
+    nonsense_pattern = re.compile(r"\W|[0-9a-z]", re.I)
+    normalized_gbk_str = re.sub(nonsense_pattern, '', input_str)
+    return {i for i in normalized_gbk_str}
 
 
 if __name__ == "__main__":
-    pass
+    print_name()
 
 
 
