@@ -58,17 +58,30 @@ def generate_persons_name():
     for i in generate_gbk_str():
         file_characters_set = str_to_set(i)
         while file_characters_set:
-            # one for display, one for output
-            a_name = chr(0x5f20) + file_characters_set.pop()
-            print(a_name, end='\t\t\t')
+            first_name = file_characters_set.pop()
+            full_name = chr(0x5f20) + first_name
+            print(full_name, end='\t\t\t')
             try:
-                if input("You like the name?  "):
-                    yield a_name
+                if input("Like the name?  "):
+                    if input("More about it?  "):
+                        generate_dict_info(first_name)
+                    yield full_name
             except EOFError:
                 print("\n" + "*" * 189)
                 raise StopIteration
             sys.stdout.write("\x1b[F")
         # for l, m, n in generate_poem_info(i):
+
+
+def generate_dict_info(character):
+    unicode_point = hex(ord(character)).strip("0x")
+    required_url = "http://www.chazidian.com/r_zi_zd" + unicode_point
+    dict_req = requests.get(required_url)
+    dict_info_tree = html.fromstring(dict_req.content)
+    section_info = dict_info_tree.xpath("//p/text()")
+    results = [i.strip() for i in section_info if i.strip()]
+    print("\r\n")
+
 
 
 def print_name():
