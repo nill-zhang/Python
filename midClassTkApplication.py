@@ -1,7 +1,9 @@
 #!/usr/bin/env python 
 import os 
 from time import sleep 
-from tkinter import * 
+from tkinter import *
+
+
 class DirList(object): 
     def __init__(self, initdir=None): 
         self.top = Tk() 
@@ -18,29 +20,31 @@ class DirList(object):
         self.dirsb.config(command=self.dirs.yview) 
         self.dirs.pack(side=LEFT, fill=BOTH) 
         self.dirfm.pack() 
-        self.dirn = Entry(self.top, width=50, 
-        textvariable=self.cwd) 
+        self.dirn = Entry(self.top, width=50,
+                          textvariable=self.cwd)
         self.dirn.bind('<Return>', self.doLS) 
         self.dirn.pack() 
         self.bfm = Frame(self.top) 
-        self.clr = Button(self.bfm, text='Clear',command=self.clrDir,activeforeground='white',activebackground='blue') 
-        self.ls = Button(self.bfm,text='List Directory',
-                            command=self.doLS,
-                            activeforeground='white',
-                            activebackground='green')
+        self.clr = Button(self.bfm, text='Clear', command=self.clrDir, activeforeground='white', activebackground='blue')
+        self.ls = Button(self.bfm, text='List Directory',
+                         command=self.doLS,
+                         activeforeground='white',
+                         activebackground='green')
         self.quit = Button(self.bfm, text='Quit',
-                            command=self.top.quit,
-                            activeforeground='white',
-                            activebackground='red')
+                           command=self.top.quit,
+                           activeforeground='white',
+                           activebackground='red')
         self.clr.pack(side=LEFT) 
         self.ls.pack(side=LEFT) 
         self.quit.pack(side=LEFT) 
         self.bfm.pack() 
         if initdir: 
             self.cwd.set(os.curdir) 
-            self.doLS() 
+            self.doLS()
+
     def clrDir(self, ev=None): 
-        self.cwd.set('') 
+        self.cwd.set('')
+
     def setDirAndGo(self, ev=None): 
         self.last = self.cwd.get() 
         self.dirs.config(selectbackground='red') 
@@ -48,7 +52,8 @@ class DirList(object):
         if not check: 
             check = os.curdir 
         self.cwd.set(check) 
-        self.doLS() 
+        self.doLS()
+
     def doLS(self, ev=None): 
         error = '' 
         tdir = self.cwd.get() 
@@ -63,10 +68,10 @@ class DirList(object):
             self.top.update() 
             sleep(2) 
             if not (hasattr(self, 'last') and self.last): 
-                self.last = os.curdir 
-            self.cwd.set(self.last) 
-            self.dirs.config(selectbackground='LightSkyBlue') 
-            self.top.update() 
+                self.last = os.curdir
+                self.cwd.set(self.last)
+                self.dirs.config(selectbackground='LightSkyBlue')
+                self.top.update()
             return 
         self.cwd.set('FETCHING DIRECTORY CONTENTS...') 
         self.top.update() 
@@ -81,8 +86,11 @@ class DirList(object):
             self.dirs.insert(END, eachFile) 
         self.cwd.set(os.curdir) 
         self.dirs.config(selectbackground='LightSkyBlue')
-def main(): 
-    d = DirList(os.curdir) 
-    mainloop() 
+
+
+def main():
+    DirList(os.curdir) 
+    mainloop()
+
 if __name__ == '__main__': 
     main()
