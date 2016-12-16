@@ -18,22 +18,23 @@ def get_text(source):
             print(subitem)
 
     # Alternatives:
-    # [1]
+
+    # (1)
     # for item in a_para:
     #     print(item.text)
 
-
-    # [2]
+    # (2)
     # simple_explanation = soup.find("div", {"class": re.compile(r"^zi_text.*")})
     # detailed_explanation = simple_explanation.findNext("div")
     # print(simple_explanation.text)
     # print(detailed_explanation.text)
 
-    # [3]
+    # (3)
     # first_explanation = soup.find(class_="zi_text_content hide").text
     # second_explanation = soup.find(class_="zi_text_content hide").text
     # print(first_explanation)
     # print(second_explanation)
+
 
 def get_tags(source):
     """ different ways to get your specific tags"""
@@ -48,11 +49,16 @@ def get_tags(source):
     print(*regex_tags)
 
 
-if __name__ == "__main__":
+def main():
     url = "http://www.chazidian.com/r_zi_zd8c19/"
     source1 = urllib.request.urlopen(url).read()
     source2 = requests.get(url).text
     source3 = open("C:/Users/Admin/Documents/GitHub/python_projects/flask/templates/sample.html").read()
     get_text(source1)
+    get_text(source2)
     get_tags(source3)
+
+
+if __name__ == "__main__":
+    main()
 
