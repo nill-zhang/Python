@@ -63,6 +63,7 @@ def generate_persons_name():
             print(full_name, end='\t\t\t')
             try:
                 if input("Like the name?  "):
+                    print("  ", end="")
                     if input("More about it?  "):
                         generate_dict_info(first_name)
                     yield full_name
@@ -80,8 +81,10 @@ def generate_dict_info(character):
     dict_info_tree = html.fromstring(dict_req.content)
     section_info = dict_info_tree.xpath("//p/text()")
     results = [i.strip() for i in section_info if i.strip()]
-    print("\r\n")
-
+    print("\r\n\033[33m" + "【 基本解释 】\033[0m")
+    print(results[7])
+    print("\r\n\033[33m" + "【 详细解释 】\033[0m")
+    print(results[8])
 
 
 def print_name():
