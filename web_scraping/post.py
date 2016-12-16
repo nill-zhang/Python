@@ -8,6 +8,7 @@ import robobrowser
 four ways to submitting forms to a website
 """
 
+
 def urllib_get(target_url):
     print("[urllib_get]")
     query_str = urllib.parse.urlencode({"q": "谙"})  # encode no-ascii character with utf-8
