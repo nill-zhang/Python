@@ -24,16 +24,24 @@ def get_text(source):
     #     print(item.text)
 
     # (2)
-    # simple_explanation = soup.find("div", {"class": re.compile(r"^zi_text.*")})
-    # detailed_explanation = simple_explanation.findNext("div")
-    # print(simple_explanation.text)
-    # print(detailed_explanation.text)
+    # first_entry = soup.find("div", {"class": re.compile(r"^zi_text.*")})
+    # second_entry = simple_explanation.findNext("div")
+    # print(first_entry.text)
+    # print(second_entry.text)
 
     # (3)
-    # first_explanation = soup.find(class_="zi_text_content hide").text
-    # second_explanation = soup.find(class_="zi_text_content hide").text
-    # print(first_explanation)
-    # print(second_explanation)
+    # first_entry = soup.find(class_="zi_text_content hide").text
+    # second_entry = soup.find(class_="zi_text_content hide").text
+    # print(first_entry)
+    # print(second_entry)
+
+    # (4)
+    # two_entry = soup.findAll(class_=re.compile(r"zi_text_content*"), limit=2)
+    # for i in two_entry:
+    #        print(i.text)
+
+    # the following will find all text that contains 详细
+    # soup.find_all(text=re.compile(r"详细"))
 
 
 def get_tags(source):
@@ -49,14 +57,35 @@ def get_tags(source):
     print(*regex_tags)
 
 
+def get_links(source):
+    soup = bs.BeautifulSoup(source, "lxml")
+    # get an attribute of a tag,you can use a["href"] as well
+    links = (a.get("href") for a in soup.find_all("a"))
+    print(*links, sep="\n")
+
+
+def get_category(source):
+    soup = bs.BeautifulSoup(source, "lxml")
+    ads = soup.find_all("div", "guanggao")
+    title = soup.find_all("div", "title")
+    listbox = soup.find_all("div", "listbox")
+    print(*ads, sep="\n")
+    print(*title, sep="\n")
+    print(*listbox, sep="\n")
+    for i in ads + title + listbox:
+        print(i.get("class"))
+
+
 def main():
     url = "http://www.chazidian.com/r_zi_zd8c19/"
     source1 = urllib.request.urlopen(url).read()
     source2 = requests.get(url).text
     source3 = open("C:/Users/Admin/Documents/GitHub/python_projects/flask/templates/sample.html").read()
-    get_text(source1)
-    get_text(source2)
-    get_tags(source3)
+    # get_text(source1)
+    # get_text(source2)
+    # get_tags(source3)
+    # get_links(source2)
+    get_category(source1)
 
 
 if __name__ == "__main__":
