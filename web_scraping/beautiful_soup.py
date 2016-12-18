@@ -36,6 +36,9 @@ def get_text(source):
     # print(second_entry)
 
     # (4)
+    # soup.findAll("", {"class":"zi_text_content"}, limit=2)
+    # soup.findAll(True, {"class":"zi_text_content"}, limit=2) also work, because
+    # beautiful soup doesn't use exact match
     # two_entry = soup.findAll(class_=re.compile(r"zi_text_content*"), limit=2)
     # for i in two_entry:
     #        print(i.text)
@@ -60,6 +63,8 @@ def get_tags(source):
 def get_links(source):
     soup = bs.BeautifulSoup(source, "lxml")
     # get an attribute of a tag,you can use a["href"] as well
+    # also, you can use
+    # links = (x.get("href") for x in soup.find_all(lambda x: x.name == "a"))
     links = (a.get("href") for a in soup.find_all("a"))
     print(*links, sep="\n")
 
@@ -77,14 +82,27 @@ def get_category(source):
 
 
 def main():
-    url = "http://www.chazidian.com/r_zi_zd8c19/"
-    source1 = urllib.request.urlopen(url).read()
-    source2 = requests.get(url).text
-    source3 = open("C:/Users/Admin/Documents/GitHub/python_projects/flask/templates/sample.html").read()
-    # get_text(source1)
-    # get_text(source2)
-    # get_tags(source3)
-    # get_links(source2)
+    try:
+        url = "http://www.chazidian.com/r_zi_zd8c19/"
+        source1 = urllib.request.urlopen(url).read()
+    except urllib.request.HTTPError:
+        print("page not found")
+    except ValueError:
+        print("invalid url")
+    except urllib.request.URLError:
+        print("no service or host available")
+    try:
+        source2 = requests.get(url).text
+    except requests.ConnectionError:
+        print("connection error")
+    try:
+        source3 = open("C:/User/Admin/Documents/GitHub/python_projects/flask/templates/sample.html").read()
+    except FileNotFoundError:
+        print("local html can not be found")
+    get_text(source1)
+    get_text(source2)
+    get_tags(source3)
+    get_links(source2)
     get_category(source1)
 
 
