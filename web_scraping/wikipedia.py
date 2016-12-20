@@ -21,11 +21,18 @@ def store_urls(urls):
             continue
         print("{:.<140}{:.>25}".format(url, "\033[33m【downloaded】\033[0m"))
 
-        yield os.path.join(os.getcwd(), fn)
+        # I can use yield os.path.join(os.getcwd(), fn) as well
+        # ideally, should use
+        yield os.path.abspath(fn)
+
 
 
 def generate_attrs(url, attr, *args, **kwargs):
-    """extract attributes from a-tags in an local html file"""
+    """extract attributes from tags in an url file
+       this url file can be online or local html file
+    """
+    if os.path.isfile(url):
+        url = "file://" + url
     with urllib.request.urlopen(url) as source:
         print(source.encoding)
         soup = bs.BeautifulSoup(source.read(), "lxml")
@@ -69,7 +76,7 @@ def traverse_wikipage(base_url, extended_url=None):
             # it will cause infinite recursion
 
 
-def test_traverse(base_url, extended_url)
+def test_traverse(base_url, extended_url):
     # traverse_wikpage("https://en.wikipedia.org", "wiki/China")
     with open("wiki_good_articles.txt", "w") as fgood, \
             open("wiki_featured_articles.txt", "w") as ffeature:
@@ -79,18 +86,20 @@ def test_traverse(base_url, extended_url)
             else:
                 fgood.write("{:<40}{:<120}\n".format(*entry))
 
+
 def test_download(urls):
-    local_html= store_urls(urls)
+    local_html = store_urls(urls)
     for i in local_html:
-       print(i)
-       print(*generate_attrs(i,"href","a","class="), sep="\n")
+        print(i)
+        print(*generate_attrs(i, "href", "a", class_="image"), sep="\n")
+
 
 if __name__ == "__main__":
     test_download(["https://en.wikipedia.org/wiki/Kevin_Bacon"])
-    traversed_links = set()
-    # featured_articles = []
-    # good_articles = []
-    test_traverse("https://en.wikipedia.org", "wiki/China")
+    # traversed_links = set()
+    # # featured_articles = []
+    # # good_articles = []
+    # test_traverse("https://en.wikipedia.org", "wiki/China")
 
 
 
