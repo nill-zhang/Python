@@ -99,11 +99,11 @@ def test_traverse(base_url, extended_url):
         # pay attention to the asterisk
         for indicator, *entry in traverse_wikipage(base_url, extended_url):
             if indicator.lower().startswith("f"):
-                ffeature.write("{:<40}{:<120}\n".format(*entry))
+                ffeature.write("{:<50}{:<120}\n".format(*entry))
                 ffeature.flush()
             else:
 
-                fgood.write("{:<40}{:<120}\n".format(*entry))
+                fgood.write("{:<50}{:<120}\n".format(*entry))
                 fgood.flush()
 
 
