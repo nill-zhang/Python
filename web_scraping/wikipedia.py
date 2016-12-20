@@ -3,6 +3,7 @@
 import urllib.request
 import bs4 as bs
 import os
+import re
 
 
 def store_urls(urls):
@@ -23,22 +24,82 @@ def store_urls(urls):
         yield os.path.join(os.getcwd(), fn)
 
 
-def generate_href(link):
-    """extract hyperlinks from a tags in an html file"""
-    with open(link, encoding="utf-8") as source:
+def generate_attrs(url, attr, *args, **kwargs):
+    """extract attributes from a-tags in an local html file"""
+    with urllib.request.urlopen(url) as source:
         print(source.encoding)
         soup = bs.BeautifulSoup(source.read(), "lxml")
-        for tag_a in soup.find_all("a"):
+        for tag in soup.find_all(*args, **kwargs):
             try:
-                yield tag_a["href"]
+                yield tag[attr]
             except KeyError:
                 continue
 
+
+def traverse_wikipage(base_url, extended_url=None):
+
+    global traversed_links
+    # global featured_articles
+    # global good_articles
+    if extended_url is None:
+        url = base_url
+    else:
+        url = urllib.request.urljoin(base_url, extended_url)
+    source = urllib.request.urlopen(url)
+    soup = bs.BeautifulSoup(source.read(), "lxml")
+    try:
+        title = soup.title.text
+    except AttributeError:
+        title = ""
+    if soup.find("div", id="mw-indicator-featured-star"):
+        yield "featured", title, url
+        # print(title, url, sep="\t")
+        # featured_articles.append((title, url))
+    elif soup.find("div", id="mw-indicator-good-star"):
+        yield "good", title, url
+        # print(title, url, sep="\t")
+        # good_articles.append((title, url))
+    links = soup.find("div", {"id": "bodyContent"})\
+        .findAll("a", href=re.compile("^(/wiki/)((?!:).)*$"))
+    traversed_links.add(extended_url)
+    for link in links:
+        if link["href"] not in traversed_links:
+            yield from traverse_wikipage(base_url, link["href"])
+            # if you put traversed_links.add(extended_url) here
+            # it will cause infinite recursion
+
+
+def test_traverse(base_url, extended_url)
+    # traverse_wikpage("https://en.wikipedia.org", "wiki/China")
+    with open("wiki_good_articles.txt", "w") as fgood, \
+            open("wiki_featured_articles.txt", "w") as ffeature:
+        for indicator, entry in traverse_wikipage(base_url, extended_url):
+            if indicator.lower().startwith("f"):
+                ffeature.write("{:<40}{:<120}\n".format(*entry))
+            else:
+                fgood.write("{:<40}{:<120}\n".format(*entry))
+
+def test_download(urls):
+    local_html= store_urls(urls)
+    for i in local_html:
+       print(i)
+       print(*generate_attrs(i,"href","a","class="), sep="\n")
+
 if __name__ == "__main__":
-    local_htmls= store_urls(["https://en.wikipedia.org/wiki/Kevin_Bacon"])
-    for i in local_htmls:
-        print(i)
-        print(*generate_href(i), sep="\n")
+    test_download(["https://en.wikipedia.org/wiki/Kevin_Bacon"])
+    traversed_links = set()
+    # featured_articles = []
+    # good_articles = []
+    test_traverse("https://en.wikipedia.org", "wiki/China")
+
+
+
+
+
+
+
+
+
 
 
 
