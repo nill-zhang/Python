@@ -4,7 +4,7 @@ import urllib.request
 import bs4 as bs
 import os
 import re
-
+import platform
 
 def store_urls(urls):
     """download html files and generate file absolute path"""
@@ -26,15 +26,28 @@ def store_urls(urls):
         yield os.path.abspath(fn)
 
 
-
 def generate_attrs(url, attr, *args, **kwargs):
     """extract attributes from tags in an url file
        this url file can be online or local html file
     """
     if os.path.isfile(url):
-        url = "file://" + url
+        # (solution 1)
+        # if os.name.lower().startswith("posix"):
+        #     url = "file://" + url
+        # else:
+        #     url = "file:\\\\" + url
+
+        # (solution 2)
+        # if platform.platform().lower().startswith("linux"):
+        #     url = "file://" + url
+        # else:
+        #     url = "file:\\\\" + url
+
+        # (solution 3) Amazing!!!!!!!!
+        url = "file:" + os.sep * 2 + url
+
+
     with urllib.request.urlopen(url) as source:
-        print(source.encoding)
         soup = bs.BeautifulSoup(source.read(), "lxml")
         for tag in soup.find_all(*args, **kwargs):
             try:
