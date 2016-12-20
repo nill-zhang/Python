@@ -46,7 +46,6 @@ def generate_attrs(url, attr, *args, **kwargs):
         # (solution 3) Amazing!!!!!!!!
         url = "file:" + os.sep * 2 + url
 
-
     with urllib.request.urlopen(url) as source:
         soup = bs.BeautifulSoup(source.read(), "lxml")
         for tag in soup.find_all(*args, **kwargs):
@@ -57,7 +56,10 @@ def generate_attrs(url, attr, *args, **kwargs):
 
 
 def traverse_wikipage(base_url, extended_url=None):
-
+    """this function is unstable, it traverse a wikipedia
+       page, check whether it's a featured or good article
+       and generate an entry then move to its contained links
+       recursively"""
     global traversed_links
     # global featured_articles
     # global good_articles
@@ -90,17 +92,23 @@ def traverse_wikipage(base_url, extended_url=None):
 
 
 def test_traverse(base_url, extended_url):
+    """test function traverse"""
     # traverse_wikpage("https://en.wikipedia.org", "wiki/China")
     with open("wiki_good_articles.txt", "w") as fgood, \
             open("wiki_featured_articles.txt", "w") as ffeature:
-        for indicator, entry in traverse_wikipage(base_url, extended_url):
-            if indicator.lower().startwith("f"):
+        # pay attention to the asterisk
+        for indicator, *entry in traverse_wikipage(base_url, extended_url):
+            if indicator.lower().startswith("f"):
                 ffeature.write("{:<40}{:<120}\n".format(*entry))
+                ffeature.flush()
             else:
+
                 fgood.write("{:<40}{:<120}\n".format(*entry))
+                fgood.flush()
 
 
 def test_download(urls):
+    """test function store_urls and generate_attrs"""
     local_html = store_urls(urls)
     for i in local_html:
         print(i)
@@ -108,11 +116,11 @@ def test_download(urls):
 
 
 if __name__ == "__main__":
-    test_download(["https://en.wikipedia.org/wiki/Kevin_Bacon"])
-    # traversed_links = set()
-    # # featured_articles = []
-    # # good_articles = []
-    # test_traverse("https://en.wikipedia.org", "wiki/China")
+    # test_download(["https://en.wikipedia.org/wiki/Kevin_Bacon"])
+    traversed_links = set()
+    # featured_articles = []
+    # good_articles = []
+    test_traverse("https://en.wikipedia.org", "wiki/China")
 
 
 
