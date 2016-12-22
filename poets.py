@@ -1,6 +1,7 @@
 #!usr/bin/python
 # by sfzhang 2016.12.12
-from urllib.request import urlopen
+import urllib.request
+import urllib.parse
 from lxml import html
 from zipfile import ZipFile
 from io import BytesIO
@@ -17,13 +18,21 @@ def generate_file_url(website_url):
     pattern = re.compile(r"txt|zip", re.I)
     for item in tree.iter("a"):
         if re.search(pattern, item.attrib['href']):
-            yield os.path.join(os.path.split(website_url)[0], item.attrib['href'])
+            split_tuple = urllib.request.urlsplit(website_url)
+            yield urllib.request.urljoin(split_tuple.scheme+"://"+split_tuple.netloc, item.attrib['href'])
 
 
 def open_file(file_url):
     txt_pattern = re.compile(r"txt", re.I)
     zip_pattern = re.compile(r"zip", re.I)
-    file = urlopen(file_url)
+    # You can not use arbitrary unicode strings as part of
+    # an URL. Sometimes, when we have Chinese Characters in our url
+    # for example, http://www.sczh.com/好.txt,
+    # we need to quote them, here we don't have to
+    # because its already quoted
+    # head, *tail = urllib.request.urlsplit(file_url)
+    # file_url = head+"://"+urllib.request.quote("".join(tail))
+    file = urllib.request.urlopen(file_url)
     if re.search(zip_pattern, file_url):
         contents = BytesIO(file.read())
         zip_data = ZipFile(contents)
@@ -46,6 +55,9 @@ def generate_poem_info(input_str):
 def generate_gbk_str():
     for i in generate_file_url("http://www.sczh.com/scdown.htm"):
         with open_file(i) as file:
+            # you can get the encoding from htmlfile
+            # charset = file.headers.get_content_charset()
+            # charset = file.info().get_content_charset()
             try:
                 gbk_str = file.read().decode("gbk")
             except UnicodeDecodeError:
