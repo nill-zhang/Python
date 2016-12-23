@@ -13,6 +13,8 @@ import sys
 
 
 def generate_file_url(website_url):
+    """generate website internal file urls from download page"""
+
     page = requests.get(website_url)
     tree = html.fromstring(page.content)
     pattern = re.compile(r"txt|zip", re.I)
@@ -23,6 +25,8 @@ def generate_file_url(website_url):
 
 
 def open_file(file_url):
+    """ return file handler depending on their extension"""
+
     txt_pattern = re.compile(r"txt", re.I)
     zip_pattern = re.compile(r"zip", re.I)
     # You can not use arbitrary unicode strings as part of
@@ -42,6 +46,8 @@ def open_file(file_url):
 
 
 def generate_poem_info(input_str):
+    """parse file and pick poem snippet out"""
+
     # poem_pattern =re.compile(r">.+(?=>)", re.DOTALL)
     # poem_pattern =re.compile(r">.+?(?=>)", re.DOTALL)
     poem_pattern = re.compile(r">(.+?)ZZ(.*?)\r\n.+?(?=>)", re.DOTALL)
@@ -53,9 +59,11 @@ def generate_poem_info(input_str):
 
 
 def generate_gbk_str():
+    """read a web-file and return its decoded string"""
+
     for i in generate_file_url("http://www.sczh.com/scdown.htm"):
         with open_file(i) as file:
-            # you can get the encoding from htmlfile
+            # you can get the encoding from html itself,sometimes
             # charset = file.headers.get_content_charset()
             # charset = file.info().get_content_charset()
             try:
@@ -67,6 +75,7 @@ def generate_gbk_str():
 
 
 def generate_persons_name():
+    """parse poem content, generate names one by one"""
     for i in generate_gbk_str():
         file_characters_set = str_to_set(i)
         while file_characters_set:
@@ -74,29 +83,49 @@ def generate_persons_name():
             full_name = chr(0x5f20) + first_name
             print(full_name, end='\t\t\t')
             try:
-                if input("Like the name?  "):
-                    print("  ", end="")
+                if input("Like it?  "):
+                    print("\t"*3, end="")
                     if input("More about it?  "):
-                        generate_dict_info(first_name)
+                        generate_name_info(chr(0x1f495), first_name)
                     yield full_name
             except EOFError:
                 print("\n" + "*" * 189)
                 raise StopIteration
+            except requests.ConnectionError:
+                continue
             sys.stdout.write("\x1b[F")
         # for l, m, n in generate_poem_info(i):
 
 
-def generate_dict_info(character):
+def generate_name_info(sign, character):
+    """single out explanation from search results about a name"""
     unicode_point = hex(ord(character)).strip("0x")
     required_url = "http://www.chazidian.com/r_zi_zd" + unicode_point
     dict_req = requests.get(required_url)
     dict_info_tree = html.fromstring(dict_req.content)
     section_info = dict_info_tree.xpath("//p/text()")
     results = [i.strip() for i in section_info if i.strip()]
-    print("\r\n\033[33m" + "【 基本解释 】\033[0m")
-    print(results[7])
-    print("\r\n\033[33m" + "【 详细解释 】\033[0m")
-    print(results[8])
+    print_name_info(sign, results)
+
+
+def print_name_info(frame_sign, entries):
+    """print explanation"""
+    title_color = ("\033[33m", "\033[0m")
+    frame_color = ("\033[91m", "\033[0m")
+    fst = "【 基本解释 】"
+    snd = "【 详细解释 】"
+    print("results[7]: %d" % len(entries[7]))
+    print("results[8]: %d" % len(entries[8]))
+    print("first_header: %d" % len(fst))
+    print("second_header: %d" % len(fst))
+    frame = (frame_sign * 60).join(frame_color)
+    edge = frame_sign.join(frame_color)
+    print(frame)
+    print(edge + fst.join(title_color).ljust(len(frame)-1, frame_sign) + edge)
+    print(edge + entries[7].ljust(len(frame)-10, frame_sign) + edge)
+    print(edge + snd.join(title_color).ljust(len(frame)-1, frame_sign) + edge)
+    print(edge + entries[8].ljust(len(frame)-10, frame_sign) + edge)
+    print(frame)
 
 
 def print_name():
