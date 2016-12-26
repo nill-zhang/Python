@@ -1,0 +1,35 @@
+typical structure of a publishable python module, replace the NAME with your module name
+skeleton/
+├── bin
+├── docs
+├── NAME
+│   └── __init__.py
+├── setup.py
+└── tests
+    ├── __init__.py
+    └── NAME_tests.py
+
+run python setup.py sdist will generate a tarball which can be distributed
+the following is the tree structure after the command be executed
+
+.
+├── bin
+├── dist
+│   └── project\ name-1.0.0.tar.gz
+├── docs
+├── NAME
+│   └── __init__.py
+├── project_name.egg-info
+│   ├── dependency_links.txt
+│   ├── PKG-INFO
+│   ├── requires.txt
+│   ├── SOURCES.txt
+│   └── top_level.txt
+├── readme
+├── setup.py
+└── tests
+    ├── __init__.py
+    └── NAME_tests.py
+
+then just extract your tar.gz file and run python setup.py install to install
+the package
