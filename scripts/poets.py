@@ -36,13 +36,22 @@ def open_file(file_url):
     # because its already quoted
     # head, *tail = urllib.request.urlsplit(file_url)
     # file_url = head+"://"+urllib.request.quote("".join(tail))
-    file = urllib.request.urlopen(file_url)
-    if re.search(zip_pattern, file_url):
-        contents = BytesIO(file.read())
-        zip_data = ZipFile(contents)
-        return zip_data.open(zip_data.namelist()[0])
-    elif re.search(txt_pattern, file_url):
-        return file
+    try:
+        file = urllib.request.urlopen(file_url)
+    except urllib.request.URLError as e:
+        if hasattr(e, "code"):
+            print("Http Error Occured %s" % e.code)
+            return None
+        elif hasattr(e, "reason"):
+            print("URLError Occured: %s" % e.reason)
+            return None
+    else:
+        if re.search(zip_pattern, file_url):
+            contents = BytesIO(file.read())
+            zip_data = ZipFile(contents)
+            return zip_data.open(zip_data.namelist()[0])
+        elif re.search(txt_pattern, file_url):
+            return file
 
 
 def generate_poem_info(input_str):
@@ -62,6 +71,7 @@ def generate_gbk_str():
     """read a web-file and return its decoded string"""
 
     for i in generate_file_url("http://www.sczh.com/scdown.htm"):
+
         with open_file(i) as file:
             # you can get the encoding from html itself,sometimes
             # charset = file.headers.get_content_charset()
@@ -70,6 +80,8 @@ def generate_gbk_str():
                 gbk_str = file.read().decode("gbk")
             except UnicodeDecodeError:
                 gbk_str = file.read().decode("gb2312")
+            except AttributeError:
+                continue
             finally:
                 yield gbk_str
 
@@ -114,18 +126,20 @@ def print_name_info(frame_sign, entries):
     frame_color = ("\033[91m", "\033[0m")
     fst = "【 基本解释 】"
     snd = "【 详细解释 】"
-    print("results[7]: %d" % len(entries[7]))
-    print("results[8]: %d" % len(entries[8]))
-    print("first_header: %d" % len(fst))
-    print("second_header: %d" % len(fst))
-    frame = (frame_sign * 60).join(frame_color)
-    edge = frame_sign.join(frame_color)
-    print(frame)
-    print(edge + fst.join(title_color).ljust(len(frame)-1, frame_sign) + edge)
-    print(edge + entries[7].ljust(len(frame)-10, frame_sign) + edge)
-    print(edge + snd.join(title_color).ljust(len(frame)-1, frame_sign) + edge)
-    print(edge + entries[8].ljust(len(frame)-10, frame_sign) + edge)
-    print(frame)
+    if len(entries) >= 8:
+        frame = (frame_sign * 60).join(frame_color)
+        edge = frame_sign.join(frame_color)
+        print(frame)
+        print(edge + fst.join(title_color).ljust(len(frame) - 1, frame_sign) + edge)
+        print(edge + entries[7].ljust(len(frame) - 10, frame_sign) + edge)
+        print(edge + snd.join(title_color).ljust(len(frame) - 1, frame_sign) + edge)
+        if len(entries) >= 9:
+            print(edge + entries[8].ljust(len(frame)-10, frame_sign) + edge)
+            print(frame)
+        else:
+            print(frame)
+    else:
+        print("Can Not Get Details!")
 
 
 def print_name():
