@@ -9,7 +9,7 @@ import requests
 def get_text(source):
     """different ways to get text underneath an element"""
     soup = bs.BeautifulSoup(source, "lxml")
-    # Beautifulsoup Supports regular expression
+    # Beautiful soup Supports regular expression
     a_para = soup.find_all("div", {"class": re.compile(r"zi_text_content*")})
 
     for item in a_para:
