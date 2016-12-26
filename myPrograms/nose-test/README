@@ -1,0 +1,3 @@
+1. Test files go in tests/ and are named xxx_tests.py; otherwise nosetests won’t
+   run them. This also keeps your tests from clashing with your other code.
+2. Write one test file for each module you make.

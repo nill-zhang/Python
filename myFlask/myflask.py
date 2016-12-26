@@ -58,9 +58,8 @@ def handler7(uid):
 
 
 @app.route('/hello/<string:login_name>')
-@app.route("/hello")
 def hello(login_name=None):
-    return flask.render_template("login.html", display_name=login_name)
+    return flask.render_template("login.html", what_name=login_name)
 
 
 @app.route("/profile/<string:name>")
