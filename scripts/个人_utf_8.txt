@@ -1,0 +1,53 @@
+﻿﻿{"name" : "张诺"
+,
+  "age" : 30
+, 
+  "company" : "IFLYTEK"
+,
+  "address" : "404-55 Humberline Drive"
+,
+  "weight" : 72
+ ,
+  "Date of Birth" : "1988-10-13"
+ ,
+  "Origin" : "China"
+ ,
+  "Spouse" : "张峰"
+ ,
+  "height" : 174
+ ,
+  "degree" : "Bachelor's Degree"
+ ,
+  "University" : ["Heifei University of Technology",
+
+                 "Anhui University of Finance and Economics",
+
+                 "George Brown College"]
+,
+  "stocks" : [{"name" : "Apple", "price" : 110.81, "country" : "US", "sector" : "Tech", "holding" : 1000},
+             
+              {"name" : "Alphabet", "price" : 774.65 , "country" : "US", "sector" : "Tech", "holding" : 1000},
+             
+              {"name" : "Tatamotors", "price" : 450.23, "country" : "IN", "sector" : "Consumer", "holding" : 1100},
+             
+              {"name" : "PG", "price" : 82.71, "country" : "US", "sector" : "Consumer", "holding" : 1800},
+             
+              {"name" : "BMW", "price" : 81.97, "country" : "GM", "sector" : "Consumer", "holding" : 2000},
+             
+              {"name" : "Royal Bank of Canada", "price" : 26.35, "country" : "CA", "sector" : "Finance", "holding" : 1000},
+             
+              {"name" : "Alibaba", "price" : 92.38, "country" : "CN", "sector" : "Tech", "holding" : 200},
+             
+              {"name" : "Netease", "price" : 232.63, "country" : "CN", "sector" : "Tech", "holding" : 2300},
+             
+              {"name" : "Starbucks", "price" : 57.31, "country" : "US", "sector" : "Consumer", "holding" : 500},
+             
+              {"name" : "Band of China", "price" : 3.46, "country" : "CN", "sector" : "Finance", "holding" : 1000},
+             
+              {"name" : "Band of America", "price" : 20.44, "country" : "US", "sector" : "Finance", "holding" : 850},
+             
+              {"name" : "HSBC", "price" : 39.81, "country" : "UK", "sector" : "Finance", "holding" : 190}
+
+              ]
+ 
+}
