@@ -1,11 +1,16 @@
+{% extends "base.html"%}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Login</title>
 </head>
 <body>
-<h1>Hello, {{ what_name }}</h1>
+{% block content %}
+<h1>Hello, {{ display_name }}</h1>
+<p>Local Time: {{moment(current_time).format("LL[]LTS")}}</p>
+<p>Time Elapsed: {{moment(current_time).fromNow(refresh=True)}}</p>
 
+{% endblock %}
 </body>
 </html>
