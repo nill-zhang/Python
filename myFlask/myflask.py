@@ -3,28 +3,43 @@
 from flask_script import Manager
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
+from flask_wtf import Form
+from wtforms import StringField, SubmitField
+from wtforms.validators import required
 import flask
 from datetime import datetime
 
 
 app = flask.Flask(__name__)
+app.config["DEBUG"] = True
+app.config["SECRET_KEY"] = "SHAOFENG ZHANG"
 
 
-@app.route("/")
+class UserForm(Form):
+    name = StringField("What is your name?", validators=[required()])
+    submit = SubmitField("Submit")
+
+
+@app.route("/", methods=["GET", "POST"])
 def handler1():
-    return """<h1>This is sfzhang's homepage</h1>
-              <br>Webpage Name: %s</br>
-              <br>Base_Url: %s</br>
-              <br>Host: %s</br>
-              <br>Browser: %s</br>
-              <br>Request Method: %s</br>
-              """ % \
-             (flask.current_app.name,
-              flask.request.base_url,
-              flask.request.host,
-              flask.request.headers.get("User-Agent"),
-              flask.request.method,
-              )
+    web_name = flask.current_app.name
+    base_url = flask.request.base_url
+    request_host = flask.request.host
+    browser_type = flask.request.headers.get("User-Agent")
+    request_method = flask.request.method
+    # for form
+    user_form = UserForm()
+    user_name = None
+    if user_form.validate_on_submit():
+        user_name = user_form.name.data
+        user_form.name.data = ""
+    return flask.render_template("index.html",
+                                 u_form=user_form, u_name=user_name,
+                                 w_name=web_name,
+                                 b_url=base_url,
+                                 r_host=request_host,
+                                 b_type=browser_type,
+                                 r_method=request_method)
 
 
 @app.route("/<username>")

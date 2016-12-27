@@ -1,0 +1,25 @@
+{% extends "base.html"%}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block content %}
+<h1>
+    {% if u_name %}
+    Hello, {{ u_name }}!
+    {% else %}
+    Hello, Stranger!
+    {% endif%}
+</h1>
+<br></br>
+{{wtf.quick_form(u_form)}}
+
+
+<br></br>
+<br></br>
+<p>Webpage Name: {{ w_name }}</p>
+<p>Base_Url: {{ b_url }}</p>
+<p>Host: {{ r_host }}</p>
+<p>Browser: {{ b_type }}</p>
+<p>Request Method: {{ r_method }}</p>
+
+
+{% endblock %}
+
