@@ -7,6 +7,7 @@ from flask_wtf import Form
 from wtforms import StringField, SubmitField
 from wtforms.validators import required
 import flask
+import time
 from datetime import datetime
 
 
@@ -27,14 +28,38 @@ def handler1():
     request_host = flask.request.host
     browser_type = flask.request.headers.get("User-Agent")
     request_method = flask.request.method
-    # for form
+
+    # Solution 1
+    # user_form = UserForm()
+    # user_name = None
+    # print("Before Submitting!")
+    # if user_form.validate_on_submit():
+    #     user_name = user_form.name.data
+    #     # clear name field
+    #     user_form.name.data = "input something here"
+    # return flask.render_template("index.html",
+    #                              u_form=user_form, u_name=user_name,
+    #                              w_name=web_name,
+    #                              b_url=base_url,
+    #                              r_host=request_host,
+    #                              b_type=browser_type,
+    #                              r_method=request_method)
+
+    # Solution 1 Improved version to counter refresh the page
+    # and double posts
     user_form = UserForm()
-    user_name = None
+    print("user_form.data: %s" % user_form.data)
+    print("Before Submitting!!")
     if user_form.validate_on_submit():
-        user_name = user_form.name.data
-        user_form.name.data = ""
+        flask.session["u_name"] = user_form.name.data
+        flask.flash("Good job! %s" % user_form.name.data, "info")
+        flask.flash("Good job! Wahaha!", "info")
+        flask.flash("Good job! Horaay!", "info")
+        flask.flash("%s" % time.asctime(time.localtime(time.time())), "info")
+        return flask.redirect(flask.url_for("handler1"))
+
     return flask.render_template("index.html",
-                                 u_form=user_form, u_name=user_name,
+                                 u_form=user_form, u_name=flask.session.get("u_name"),
                                  w_name=web_name,
                                  b_url=base_url,
                                  r_host=request_host,
