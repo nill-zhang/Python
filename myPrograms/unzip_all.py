@@ -38,7 +38,7 @@ def unzip_all(input_dir, output_dir=None):
                     # you can also use file[:-3] instead of file.replace(....)
                     ungzip_file = os.path.join(abs_output_dir, file.replace(".gz", ""))
                     # pay attention to how I open f_in and f_out
-                    # f_in is a gziped file, so I use gzip.open
+                    # f_in is a gzipped file, so I use gzip.open
                     # f_out is written as a normal file
                     # vice versa, if you want to compress a normal file using gzip
                     # just switch the two open methods
@@ -60,7 +60,7 @@ def unzip_all(input_dir, output_dir=None):
                     else:
                         try:
                             os.makedirs(abs_output_dir)
-                        except:
+                        except OSError:
                             sys.stdout.write("Operation Failed! \
                                                 unable to Create %s" % abs_output_dir)
                         else:
@@ -72,6 +72,10 @@ def unzip_all(input_dir, output_dir=None):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 3:
+    if len(sys.argv) < 2:
         sys.stdout.write("Please indicate a directory where you want to start from!\n")
-    unzip_all("C:\\Users\\Admin\\Desktop\\datasets", "c:\\cygwin64\\home\\Admin\\dataset")
+        sys.exit(1)
+    try:
+        unzip_all(*sys.argv[1:])
+    except TypeError:
+        raise SystemExit("Too many Parameters")
