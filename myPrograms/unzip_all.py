@@ -28,7 +28,7 @@ def unzip_all(input_dir, output_dir=None):
         for path, dirs, files in os.walk(input_dir):
             for file in files:
                 file_abspath = os.path.join(path, file)
-                if zipfile.is_zipfile(file):
+                if zipfile.is_zipfile(file_abspath):
                     opener, mode = zipfile.ZipFile, "r"
                 elif re.search(tgz_pattern, file):
                     opener, mode = tarfile.open, "r:gz"
@@ -37,7 +37,12 @@ def unzip_all(input_dir, output_dir=None):
                 elif re.search(gz_pattern, file):
                     # you can also use file[:-3] instead of file.replace(....)
                     ungzip_file = os.path.join(abs_output_dir, file.replace(".gz", ""))
-                    with gzip.open(file_abspath, "rb") as f_in, gzip.open(ungzip_file, "wb") as f_out:
+                    # pay attention to how I open f_in and f_out
+                    # f_in is a gziped file, so I use gzip.open
+                    # f_out is written as a normal file
+                    # vice versa, if you want to compress a normal file using gzip
+                    # just switch the two open methods
+                    with gzip.open(file_abspath, "rb") as f_in, open(ungzip_file, "wb") as f_out:
                         shutil.copyfileobj(f_in, f_out)
                     print("{:.<140}{:.>25}".format(file_abspath, "\033[33m【Done!】\033[0m"))
                     continue
