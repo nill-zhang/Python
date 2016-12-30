@@ -5,6 +5,11 @@
     <title>Title</title>
 </head>
 <body>
-<p>Hi {{ name }}</p>
+{% block body %}
+<form name="login" action="/login" method="post">
+    Hello {{ title }}, please login by:
+    <input type="text" name="user" />
+</form>
+{% endblock %}
 </body>
 </html>

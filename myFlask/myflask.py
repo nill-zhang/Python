@@ -111,9 +111,15 @@ def hello(login_name=None):
                                  current_time=current_time)
 
 
-@app.route("/profile/<string:name>")
-def show_profile(name):
-    return flask.render_template('profile.html', name=name)
+@app.route("/profile", methods=["GET", "POST"])
+def show_profile():
+    if flask.request.method == "POST":
+        if flask.request.form["user"].lower() == "sfzhang":
+            return "How are you, man"
+        else:
+            return "Sorry, not you!"
+    title = flask.request.args.get("title", "nobody")
+    return flask.render_template("profile.html", title=title)
 
 
 def load_user(user_id):
