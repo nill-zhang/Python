@@ -111,15 +111,26 @@ def hello(login_name=None):
                                  current_time=current_time)
 
 
-@app.route("/profile", methods=["GET", "POST"])
-def show_profile():
+@app.route("/signin", methods=["GET", "POST"])
+def sign_in():
     if flask.request.method == "POST":
         if flask.request.form["user"].lower() == "sfzhang":
-            return "How are you, man"
+            flask.session["user"] = "sfzhang"
+            return "<h1>How are you, man</h1>"
         else:
-            return "Sorry, not you!"
-    title = flask.request.args.get("title", "nobody")
-    return flask.render_template("profile.html", title=title)
+            return "<h1>Sorry, not you!</h1>"
+    if flask.session.get("user"):
+        return "<h1>Hello %s</h1>" % flask.session["user"]
+    else:
+        title = flask.request.args.get("title", "nobody")
+        return flask.render_template("signin.html", title=title)
+
+
+@app.route("/signout")
+def sign_out():
+    flask.session.pop("user", None)
+    return flask.redirect(flask.url_for("sign_in"))
+
 
 
 def load_user(user_id):
