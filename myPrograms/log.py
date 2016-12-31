@@ -5,7 +5,7 @@ import logging
 import sys
 from logging import StreamHandler
 from logging import FileHandler
-# from logging import Formatter
+from logging import Formatter
 # from logging.handlers import TimedRotatingFileHandler
 # from logging.handlers import WatchedFileHandler
 
@@ -27,23 +27,35 @@ def test_logging():
 
 
 def test_advanced_logging():
-    # instantiate a stream handler
+    """One logger with two handlers with different log severities.
+       One is to stdout,
+       The other is to file
+    """
+    # use same date format
+    uniform_datefmt="%b %d,%H:%M:%S"
+    # instantiate a stream handler, default is stderr
     console_handler = StreamHandler()
-    console_fmt = "%(asctime)-30s-%(levelname)s-%(name)s-%(pathname)s-%(message)s-%()s"
-    console_handler.setFormatter(fmt=console_fmt)
+    console_fmt = "%(asctime)s-%(levelname)s-%(name)s-%(pathname)s-%(message)s"
+    fmt = Formatter(console_fmt, uniform_datefmt)
+    console_handler.setFormatter(fmt)
     console_handler.setLevel(logging.WARNING)
 
     # instantiate a file handler
     file_handler = FileHandler("advanced.log")
     file_fmt = "%(asctime)s-%(levelname)s-%(message)s"
+    fmt = Formatter(file_fmt, uniform_datefmt)
+    file_handler.setFormatter(fmt)
+    file_handler.setLevel(logging.ERROR)
 
     logger = logging.getLogger("file")
-    logger.setLevel(logging.WARNING)
+    logger.setLevel(logging.DEBUG)
     logger.addHandler(console_handler)
+    logger.addHandler(file_handler)
 
     logger.error("This is an error")
     logger.critical("This is a critical")
     logger.warning("This is a warning")
+    # check before operate
     if logger.isEnabledFor(logging.INFO):
         logger.info("This is an info")
 
