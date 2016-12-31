@@ -6,6 +6,8 @@ from flask_moment import Moment
 from flask_wtf import Form
 from wtforms import StringField, SubmitField
 from wtforms.validators import required
+from logging.handlers import TimedRotatingFileHandler
+import logging
 import flask
 import time
 from datetime import datetime
@@ -175,8 +177,30 @@ def invalid_usage(error):
     return response
 
 
+def setup_log():
+    """ setup two log handlers dealing with different severities"""
+
+    server_log_handler = TimedRotatingFileHandler("server.log", "D")
+    server_log_fmt = "[%(asctime)s][%(levelname)s][in Line:%(lineno)s][%(message)s]"
+    server_log_handler.setFormatter(logging.Formatter(server_log_fmt))
+    server_log_handler.setLevel(logging.DEBUG)
+
+    error_log_handler = TimedRotatingFileHandler("error.log", "D")
+    error_log_fmt = "{%(asctime)s}{%(message)s}"
+    error_log_handler.setFormatter(logging.Formatter(error_log_fmt))
+    error_log_handler.setLevel(logging.ERROR)
+
+    app.logger.addHandler(error_log_handler)
+    app.logger.addHandler(server_log_handler)
+
+
+
+
+setup_log()
 @app.route("/denied")
 def denied():
+    app.logger.debug("Requests from IP: %s has been denied" % flask.request.remote_addr)
+    app.logger.error("An attempt from IP: %s has happened" % flask.request.remote_addr)
     raise InvalidUsage("You don't have permission to access this page!")
 
 
@@ -191,7 +215,7 @@ if __name__ == "__main__":
     #     sys.argv.extend(["runserver", "--host", "0.0.0.0"])
     bootstrap = Bootstrap(app)
     moment = Moment(app)
-    app.run()
+    app.run(host="0.0.0.0")
 
 
 
