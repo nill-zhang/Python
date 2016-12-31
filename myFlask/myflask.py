@@ -22,7 +22,7 @@ class UserForm(Form):
 
 
 @app.route("/", methods=["GET", "POST"])
-def handler1():
+def index():
     web_name = flask.current_app.name
     base_url = flask.request.base_url
     request_host = flask.request.host
@@ -68,36 +68,31 @@ def handler1():
 
 
 @app.route("/<username>")
-def handler2(username):
+def uname(username):
     return "<h1>%s, welcome to SFZHANG.COM" % username
 
 
-@app.route("/forbidden")
-def handler3():
-    return "<h1> %s , Page Forbidden by Server</h1>" % flask.url_for("handler3", _external=True), 403
-
-
 @app.route("/response")
-def handler4():
+def responses():
     response = flask.make_response("<h2>This Documents Carries a cookie</h2>")
     response.set_cookie("answer", "42")
     return response
 
 
 @app.route("/internal_redirect")
-def handler5():
+def internal_redirect():
     return flask.redirect("external_redirect")
 
 
 @app.route("/external_redirect")
-def handler6():
+def external_redirect():
     # must come with scheme, otherwise
     # flask will consider it as a internal link
     return flask.redirect("http://www.google.com")
 
 
 @app.route("/<int:uid>")
-def handler7(uid):
+def int_arg(uid):
     user = load_user(uid)
     if not user:
         flask.abort(404)
@@ -116,14 +111,23 @@ def sign_in():
     if flask.request.method == "POST":
         if flask.request.form["user"].lower() == "sfzhang":
             flask.session["user"] = "sfzhang"
-            return "<h1>How are you, man</h1>"
+            response = flask.make_response("<h1>How are you, admin</h1>")
+            response.set_cookie("signin_time", time.strftime("%b %d,%a,%Y %H:%M:%S"))
+            return response
         else:
-            return "<h1>Sorry, not you!</h1>"
+            flask.make_response("<h1>Sorry,I am waiting for sfzhang, not you!</h1>")
+            return
     if flask.session.get("user"):
-        return "<h1>Hello %s</h1>" % flask.session["user"]
+        signin_time = flask.request.cookies.get("signin_time")
+        response = flask.make_response("<h1>Hello %s, you signed in at %s</h1>" % (flask.session["user"], signin_time))
+        return response
     else:
         title = flask.request.args.get("title", "nobody")
-        return flask.render_template("signin.html", title=title)
+        print("request.headers:\n %r" % flask.request.headers)
+        response = flask.make_response(flask.render_template("signin.html", title=title))
+        response.headers["location"] = "Canada"
+        print("response.headers:\n %r" % response.headers)
+        return response
 
 
 @app.route("/signout")
@@ -132,14 +136,13 @@ def sign_out():
     return flask.redirect(flask.url_for("sign_in"))
 
 
-
 def load_user(user_id):
     users = {100: "sfzhang", 101: "xlyang", 102: "lyzhang"}
     return users.get(user_id)  # default to none if key is not found
 
 
 @app.errorhandler(404)
-def page_not_found(e):  # Note: error handling function has e argument
+def page_not_found():  # Note: error handling function has e argument
     # Note that, here you can put url_for directly in 404.html as a
     # placeholder, or you generate the link and use it to substitute an
     # variable in 404.html like the following commented part
@@ -149,9 +152,37 @@ def page_not_found(e):  # Note: error handling function has e argument
 
 
 @app.errorhandler(500)
-def server_error(e):
+def server_error():
     return flask.render_template("500.html"), 500
 
+
+class InvalidUsage(Exception):
+    """A Custom Exception Class"""
+    def __init__(self, message, status_code=400):
+        super(InvalidUsage, self).__init__()
+        self.message = message
+        self.status_code = status_code
+
+
+# Register the InvalidUsage Exception
+# Once this exception is raised, execute
+# invalid_usage function
+@app.errorhandler(InvalidUsage)
+def invalid_usage(error):
+    message = error.message
+    response = flask.make_response(message)
+    response.status_code = error.status_code
+    return response
+
+
+@app.route("/denied")
+def denied():
+    raise InvalidUsage("You don't have permission to access this page!")
+
+
+@app.route("/forbidden")
+def forbidden():
+    return "<h1> %s , Page Forbidden by Server</h1>" % flask.url_for("forbidden", _external=True), 403
 
 if __name__ == "__main__":
     # app.run(debug=True)
