@@ -6,8 +6,15 @@ import sys
 from logging import StreamHandler
 from logging import FileHandler
 from logging import Formatter
-# from logging.handlers import TimedRotatingFileHandler
-# from logging.handlers import WatchedFileHandler
+import platform
+import os
+
+
+class CustomFiler(logging.Filter):
+    """A custom filter class"""
+    def filter(self, record):
+        record.platform = platform.platform()
+        return True
 
 
 def test_logging():
@@ -24,6 +31,7 @@ def test_logging():
     custom_level = 100
     logging.addLevelName(custom_level, "CUSTOM_LEVEL")
     logging.log(custom_level, "This one is special")
+    logging.makeLogRecord()
 
 
 def test_advanced_logging():
@@ -31,26 +39,43 @@ def test_advanced_logging():
        One is to stdout,
        The other is to file
     """
+
+    logger = logging.getLogger("duo-logger")
+    # add my custom filter
+    logger.addFilter(CustomFiler())
+
+    # a smart way to get the local ip I am using
+    import socket
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    my_ip = s.getsockname()[0]
+    s.close()
+
+    # for linux, use key "USER"
+    extra = {"ip": my_ip, "user": os.getenv("USERNAME")}
+    logger.setLevel(logging.DEBUG)
     # use same date format
     uniform_datefmt="%b %d,%H:%M:%S"
+
     # instantiate a stream handler, default is stderr
-    console_handler = StreamHandler()
-    console_fmt = "%(asctime)s-%(levelname)s-%(name)s-%(pathname)s-%(message)s"
+    console_handler = StreamHandler(sys.stdout)
+    # using extra attributes
+    console_fmt = "{%(asctime)s}-{%(levelname)s}-{host:%(ip)s}-{%(user)s}-{%(message)s}"
     fmt = Formatter(console_fmt, uniform_datefmt)
     console_handler.setFormatter(fmt)
     console_handler.setLevel(logging.WARNING)
 
     # instantiate a file handler
     file_handler = FileHandler("advanced.log")
-    file_fmt = "%(asctime)s-%(levelname)s-%(message)s"
+    # using filter attribute
+    file_fmt = "{%(asctime)s}-{%(platform)s}{%(levelname)s}-{%(message)s}"
     fmt = Formatter(file_fmt, uniform_datefmt)
     file_handler.setFormatter(fmt)
     file_handler.setLevel(logging.ERROR)
 
-    logger = logging.getLogger("file")
-    logger.setLevel(logging.DEBUG)
     logger.addHandler(console_handler)
     logger.addHandler(file_handler)
+    logger = logging.LoggerAdapter(logger, extra)
 
     logger.error("This is an error")
     logger.critical("This is a critical")
@@ -61,7 +86,7 @@ def test_advanced_logging():
 
 
 if __name__ == "__main__":
-    test_logging()
+    #test_logging()
     test_advanced_logging()
 
 
