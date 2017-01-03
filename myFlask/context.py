@@ -2,113 +2,128 @@
 # by sfzhang 2017.1.2
 import flask
 from flask import Flask
+from flask_bootstrap import Bootstrap
 from flask import request_started, request_finished, request_tearing_down, \
                   appcontext_popped, appcontext_pushed, appcontext_tearing_down, \
                   before_render_template, message_flashed, template_rendered
 import blinker
 # from werkzeug.test import EnvironBuilder
 app = Flask(__name__)
+app.config.update({"SECRET_KEY": "SHAOFENG ZHANG"})
+
 
 # ###################################Context Hook ############################################
+def hook_output_decorator(func):
+    """print current context hook func name"""
+    def wrapper(*args, **kwargs):
+        print("\033[34mHook: %s\033[0m" % func.__name__)
+        func(*args, **kwargs)
+        print("=" * 180)
+    return wrapper
 
 
 @app.before_first_request
+@hook_output_decorator
 def before_first_request():
-    print("before_first_request %s" % flask.g)
+    pass
 
 
 @app.before_request
+@hook_output_decorator
 def before_request():
-    print("before_request %s" % flask.g)
+    pass
 
 
 # We need to pass an parameter to the following
 # three methods
 
 @app.after_request
+@hook_output_decorator
 def after_request(resp):
-    print("after_request %s" % flask.g)
     resp.headers["random"] = "random"
     return resp
 
 
 @app.teardown_request
+@hook_output_decorator
 def teardown_request(e):
-    print("teardown_request: %s" % flask.g)
+    pass
 
 
 @app.teardown_appcontext
+@hook_output_decorator
 def teardown_appcontext(e):
-    print("teardown_appcontext: %s" % flask.g)
+    pass
 
-
-################################################################################
+# ###################################END#########################################
 
 
 # ###################################Signals#####################################
+def callback_output_decorator(func):
+    """ print all the parameters passed to a receiver(callbacks) by sender"""
+    def wrapper(*args, **kwargs):
+        print("\033[33mSignal: %s" % (func.__name__.replace("_", " ")[:-9]).title())
+        print("Parameters Passed in:")
+        print(*("%s--->%s" % i for i in kwargs.items()), sep="\n")
+        func(*args, **kwargs)
+        print("\033[0m" + "=" * 180)
 
+    return wrapper
+
+
+@callback_output_decorator
 def request_started_callback(sender, **extra):
-    print("Signal: Request Started")
-    print("Parameters Passed in:")
-    print(("%s--->%s" % i for i in extra.items()), sep="\n")
+    pass
 
 request_started.connect(request_started_callback, app)
 
 
 @request_finished.connect_via(app)
+@callback_output_decorator
 def request_finished_callback(sender, **extra):
-    print("Signal: Request Finished")
-    print("Parameters Passed in:")
-    print(("%s--->%s" % i for i in extra.items()), sep="\n")
+    pass
 
 
 @request_tearing_down.connect_via(app)
+@callback_output_decorator
 def request_tearing_down_callback(sender, **extra):
-    print("Signal: Request Tearing Down")
-    print("Parameters Passed in:")
-    print(("%s--->%s" % i for i in extra.items()), sep="\n")
+    pass
 
 
 @appcontext_popped.connect_via(app)
+@callback_output_decorator
 def appcontext_popped_callback(sender, **extra):
-    print("Signal: Appcontext Popped")
-    print("Parameters Passed in:")
-    print(("%s--->%s" % i for i in extra.items()), sep="\n")
+    pass
 
 
 @appcontext_pushed.connect_via(app)
+@callback_output_decorator
 def appcontext_pushed_callback(sender, **extra):
-    print("Signal Appcontext Pushed")
-    print("Parameters Passed in:")
-    print(("%s--->%s" % i for i in extra.items()), sep="\n")
+    pass
 
 
 @appcontext_tearing_down.connect_via(app)
-def appcontext_tearing_down(sender, **extra):
-    print("Signal: Appcontext Tearing Down")
-    print("Parameters Passed in:")
-    print(("%s--->%s" % i for i in extra.items()), sep="\n")
+@callback_output_decorator
+def appcontext_tearing_down_callback(sender, **extra):
+    pass
 
 
 @before_render_template.connect_via(app)
+@callback_output_decorator
 def before_render_template_callback(sender, **extra):
-    print("Signal: Before Render Template")
-    print("Parameters Passed in:")
-    print(("%s--->%s" % i for i in extra.items()), sep="\n")
+    pass
 
 
 @template_rendered.connect_via(app)
+@callback_output_decorator
 def template_rendered_callback(sender, **extra):
-    print("Signal: Template Rendered")
-    print("Parameters Passed in:")
-    print(("%s--->%s" % i for i in extra.items()), sep="\n")
+    pass
 
 
 @message_flashed.connect_via(app)
+@callback_output_decorator
 def message_flashed_callback(sender, **extra):
-    print("Signal: Message Flashed")
-    print("Parameters Passed in:")
-    print(("%s--->%s" % i for i in extra.items()), sep="\n")
+    pass
 
 
 custom_signal = blinker.Namespace()
@@ -116,12 +131,13 @@ index_called = custom_signal.signal("index_called")
 
 
 @index_called.connect_via(app)
+@callback_output_decorator
 def index_called_custom_callback(sender, **extra):
-    print("Custom Signal: Index Called")
-    print("Parameters Passed in:")
-    print(("%s--->%s" % i for i in extra.items()), sep="\n")
+    pass
 
-###############################################################################
+#####################################END##########################################
+
+
 @app.route("/")
 def index():
     print("Handling Request")
@@ -140,6 +156,7 @@ def index():
 
 
 if __name__ == "__main__":
+    bootstrap = Bootstrap(app)
     app.run()
 
 
