@@ -1,0 +1,8 @@
+<p>Application Name: {{ appname }}</p>
+<p>Current Time: {{ get_time("%H:%M:%S") }}</p>
+<p>Current Date: {{ get_time("%b,%d") }}</p>
+<p>User: {{ session.uname}}</p>
+<p>Secret-Key: {{ config.SECRET_KEY }}</p>
+<p>DataBase: {{ g.db }}</p>
+<p>Static Url File: {{ url_for("static", filename="style/css") }}</p>
+<p>Requested Url: {{ request.url }}</p>

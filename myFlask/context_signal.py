@@ -103,7 +103,7 @@ def request_tearing_down_callback(sender, **extra):
 @callback_output_decorator
 def appcontext_popped_callback(sender, **extra):
     pass
-
+    flask.request
 
 @appcontext_pushed.connect_via(app)
 @callback_output_decorator
