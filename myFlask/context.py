@@ -7,53 +7,62 @@ from flask import request_started, request_finished, request_tearing_down, \
                   appcontext_popped, appcontext_pushed, appcontext_tearing_down, \
                   before_render_template, message_flashed, template_rendered
 import blinker
+from functools import wraps
+import inspect
+import sys
 # from werkzeug.test import EnvironBuilder
 app = Flask(__name__)
 app.config.update({"SECRET_KEY": "SHAOFENG ZHANG"})
 
 
 # ###################################Context Hook ############################################
-def hook_output_decorator(func):
-    """print current context hook func name"""
-    def wrapper(*args, **kwargs):
-        print("\033[34mHook: %s\033[0m" % func.__name__)
-        func(*args, **kwargs)
-        print("=" * 180)
-    return wrapper
+# def hook_output_decorator(func):
+#     """print current context hook func name"""
+#     @wraps(func)
+#     def wrapper(*args, **kwargs):
+#         print("\033[34mHook: %s\033[0m" % func.__name__)
+#         func(*args, **kwargs)
+#         print("=" * 180)
+#     return wrapper
+
+
+# Initial I was thinking using decorator functions to normalize output
+# But there is a complicated flask.response bug that prevent me from using two decorators
+# on one function, so I ended up using call stack info to get the caller's function name
+def normalize_output():
+    """Print a caller's name and format output"""
+    # print("\033[34mHook: %s\033[0m" % sys._getframe(1).f_code.co_name)
+    print("\033[34mHook: %s\033[0m" % inspect.stack()[1][3])
+    print("=" * 180)
 
 
 @app.before_first_request
-@hook_output_decorator
 def before_first_request():
-    pass
+    normalize_output()
 
 
 @app.before_request
-@hook_output_decorator
 def before_request():
-    pass
+    normalize_output()
 
 
 # We need to pass an parameter to the following
 # three methods
-
 @app.after_request
-@hook_output_decorator
 def after_request(resp):
     resp.headers["random"] = "random"
+    normalize_output()
     return resp
 
 
 @app.teardown_request
-@hook_output_decorator
 def teardown_request(e):
-    pass
+    normalize_output()
 
 
 @app.teardown_appcontext
-@hook_output_decorator
 def teardown_appcontext(e):
-    pass
+    normalize_output()
 
 # ###################################END#########################################
 
