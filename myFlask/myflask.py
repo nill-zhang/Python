@@ -58,7 +58,7 @@ def index():
         flask.flash("Good job! Wahaha!", "info")
         flask.flash("Good job! Horaay!", "info")
         flask.flash("%s" % time.asctime(time.localtime(time.time())), "info")
-        return flask.redirect(flask.url_for("handler1"))
+        return flask.redirect(flask.url_for("index"))
 
     return flask.render_template("index.html",
                                  u_form=user_form, u_name=flask.session.get("u_name"),
@@ -194,8 +194,6 @@ def setup_log():
     app.logger.addHandler(server_log_handler)
 
 
-
-
 setup_log()
 @app.route("/denied")
 def denied():
@@ -215,7 +213,8 @@ if __name__ == "__main__":
     #     sys.argv.extend(["runserver", "--host", "0.0.0.0"])
     bootstrap = Bootstrap(app)
     moment = Moment(app)
-    app.run(host="0.0.0.0")
+    app.run()
+    #app.run(host="0.0.0.0")
 
 
 
