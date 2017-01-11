@@ -7,7 +7,7 @@ app = Flask("FLAPP")
 app.config.update({"DEBUG": True, "SECRET_KEY": "whatever"})
 
 # The following two methods define customize jinja2 variables and
-# funtions we can use in our templates
+# funtions that we can use in our templates
 
 
 @app.context_processor
