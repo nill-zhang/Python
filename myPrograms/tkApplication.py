@@ -4,20 +4,31 @@
 import tkinter
 import functools
 import tkinter.messagebox
+
+
 def showYes():
     showYesWin =tkinter.Toplevel()
     labelShowYes = tkinter.Label(showYesWin,test = 'yes,this is kernelTest!')
     labelShowYes.pack()
     showYesWin.mainloop()
     print('yes,this is kernelTest!')
+
+
+
 def showNo():
     showNoWin =tkinter.Toplevel()
     labelShowNo = tkinter.Label(showNoWin,test = 'yes,this is kernelTest!')
     labelShowNo.pack()
     showNoWin.mainloop()
     print('no,this is not kernelTest!')
+
+
+
+
 def setSize(ev=None):
     label.config(font = 'Helvetica -{0} bold'.format(scaleBar.get()))
+
+
 
 warnCB = lambda : tkinter.messagebox.showwarning('Waring','警告！')
 messageCB = lambda : tkinter.messagebox.showerror('message','消息！')
