@@ -22,10 +22,10 @@ def copy_onetype_files(src, des, regex):
         for eachfile in item[2]:
             if re.compile(r'(\.'+regex+')$', re.I)\
                                 .search(eachfile):
-                logging.debug (os.path.join(item[0], "\033[92m{}\033[0m".\
+                logging.debug(os.path.join(item[0], "\033[92m{}\033[0m".\
                        format(eachfile)))
                 shutil.copy(os.path.join(item[0], eachfile), des)
-                result_list.append(os.path.join(des, each_file))
+                result_list.append(os.path.join(des, eachfile))
     return result_list
                 
 
@@ -69,6 +69,7 @@ def search_empty_file(src):
 
 
 def search_filename_onpattern(directory, regex):
+
     user_pattern = re.compile(r'('+regex+')', re.I)
     result_list = []
     for item in os.walk(os.path.abspath(directory)):
