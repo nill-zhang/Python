@@ -1,5 +1,6 @@
 #/usr/bin/python
 
+
 class GamersNetwork(object):
     
     def __init__(self,data_input):
@@ -34,8 +35,9 @@ class GamersNetwork(object):
                 else:
                     network[name.strip()] = personal_dict
         return network
-                
+
     def get_connections(self, network, user):
+
         if user in network:
             try:
                 return network[user]['connections']
@@ -45,6 +47,7 @@ class GamersNetwork(object):
             return None
 
     def get_games_liked(self, network,user):
+
         if user in network:
             try:
                 return network[user]['likes']
@@ -54,7 +57,8 @@ class GamersNetwork(object):
             return None
 
     def add_connection(self, network, user_A, user_B):
-        A_connection = get_connections(network,user_A)
+
+        A_connection = self.get_connections(network,user_A)
         if A_connection:
             if not user_B in A_connection:
                 network[user_A]['connections'].append[user_B]
@@ -67,6 +71,7 @@ class GamersNetwork(object):
         return network
 
     def add_new_user(self, network,user,games):
+
         if user in network:
             return network
         else:
@@ -75,37 +80,47 @@ class GamersNetwork(object):
 
   
     def get_secondary_connections(self, network, user):
-        if not user in network:
+
+        if user not in network:
             return None
-        elif not 'connections' in network[user]:
+        elif 'connections' not in network[user]:
             return []
         else:
             secondary_list = []
             for each_person in network[user]['connections']:
-                if get_connections(network,each_person):
-                    secondary_list.extend(get_connections(network,each_person))
+                if self.get_connections(network,each_person):
+                    secondary_list.extend(self.get_connections(network, each_person))
             return list(set(secondary_list))  #remove duplicate entries
 
     def count_common_connections(self, network, user_A, user_B):
+
         count = 0
         if user_A in network and user_B in network:
-            userB_connections = get_connections(network, user_B)
-            for each_person in get_connections(network,user_A):
+            userB_connections = self.get_connections(network, user_B)
+            for each_person in self.get_connections(network,user_A):
                 if each_person in userB_connections:
                     count += 1
         return count
 
     def find_path_to_friend(self, network, user_A, user_B):
+
         path_list = []
         if user_A in network and user_B in network:
-            userA_connections = get_connections(network, user_A)
+            userA_connections = self.get_connections(network, user_A)
             if user_B in userA_connections:
                 path_list.extend([user_A,user_B])
                 return path_list
             else:
                path_list.append(user_A)
                for each_person in userA_connections:
-                   find_path_to_friend(network, each_person, user_B)
+                   self.find_path_to_friend(network, each_person, user_B)
         
         return path_list
-           
+
+
+def main():
+    ins = GamersNetwork
+    ins.add_new_user()
+
+if __name__ == '__main__':
+    main()
