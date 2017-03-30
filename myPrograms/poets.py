@@ -7,7 +7,6 @@ from zipfile import ZipFile
 from io import BytesIO
 import re
 import requests
-import os
 import shutil
 import sys
 
