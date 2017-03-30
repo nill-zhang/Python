@@ -4,18 +4,20 @@ from time import sleep
 from tkinter import *
 
 
-class DirList(object): 
-    def __init__(self, initdir=None): 
+class DirList(object):
+
+    def __init__(self, initdir=None):
+
         self.top = Tk() 
         self.label = Label(self.top,text='Directory Lister v1.1') 
         self.label.pack() 
         self.cwd = StringVar(self.top) 
-        self.dirl = Label(self.top, fg='blue',font=('Helvetica', 12, 'bold')) 
+        self.dirl = Label(self.top, fg='blue', font=('Helvetica', 12, 'bold'))
         self.dirl.pack() 
         self.dirfm = Frame(self.top) 
         self.dirsb = Scrollbar(self.dirfm) 
         self.dirsb.pack(side=RIGHT, fill=Y) 
-        self.dirs = Listbox(self.dirfm, height=15,width=50, yscrollcommand=self.dirsb.set) 
+        self.dirs = Listbox(self.dirfm, height=15, width=50, yscrollcommand=self.dirsb.set)
         self.dirs.bind('<Double-1>', self.setDirAndGo) 
         self.dirsb.config(command=self.dirs.yview) 
         self.dirs.pack(side=LEFT, fill=BOTH) 
@@ -45,7 +47,8 @@ class DirList(object):
     def clrDir(self, ev=None): 
         self.cwd.set('')
 
-    def setDirAndGo(self, ev=None): 
+    def setDirAndGo(self, ev=None):
+
         self.last = self.cwd.get() 
         self.dirs.config(selectbackground='red') 
         check = self.dirs.get(self.dirs.curselection()) 
@@ -54,7 +57,8 @@ class DirList(object):
         self.cwd.set(check) 
         self.doLS()
 
-    def doLS(self, ev=None): 
+    def doLS(self, ev=None):
+
         error = '' 
         tdir = self.cwd.get() 
         if not tdir: 
