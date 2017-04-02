@@ -36,7 +36,8 @@ class BetterCountMissing(object):
         return "missing"
 
 
-if __name__ == "__main__":
+def main():
+
     missing_count = 0
     keyword_list = ["name", "age", "weight", "Date of Birth", "address"]
     personal_info = (("company", "IFLYTEK"),
@@ -60,3 +61,6 @@ if __name__ == "__main__":
     print(missing_count, instance1.missing_count, instance2.missing_count, sep="\t")
     print(mydict1, mydict2, mydict3, sep="\n")
 
+
+if __name__ == "__main__":
+    main()
