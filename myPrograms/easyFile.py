@@ -1,39 +1,44 @@
-#!/usr/bin/python
-#-*-coding: GBK-*-
-#---by sfzhang 2011.12.10---
+# !/usr/bin/python
+# -*-coding: GBK-*-
+# ---by sfzhang 2011.12.10---
 import os
 import re
 import os.path
 import shutil
 import sys
-import code
+
 def convertToWindowsPath(pathString):
-    '''¶ÔÂ·¾¶×Ö·û´®½øÐÐ¹æÕû£¬½«¸÷ÖÖÂ·¾¶×ª»¯³Éwindows±ê×¼Â·¾¶£¬¼´ÕýÐ±¸Ü\ÐÎÊ½Â·¾¶'''
-    #ÅÐ¶ÏÊÇ·ñÓÐwindowsË«Ð±¸ÜÂ·¾¶
+    '''ï¿½ï¿½Â·ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½windowsï¿½ï¿½×¼Â·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½\ï¿½ï¿½Ê½Â·ï¿½ï¿½'''
+    #ï¿½Ð¶ï¿½ï¿½Ç·ï¿½ï¿½ï¿½windowsË«Ð±ï¿½ï¿½Â·ï¿½ï¿½
     if '\\\\' in pathString:
-        #ÅÐ¶ÏÊÇ²»ÊÇÍøÂç¹²ÏíÂ·¾¶
+        #ï¿½Ð¶ï¿½ï¿½Ç²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ç¹²ï¿½ï¿½Â·ï¿½ï¿½
         if not pathString.startswith('\\\\'):
             pathString = re.sub('\\\\\\\\','\\\\',pathString)
         else:
-            #ÈôÊÇÍøÂç¹²ÏíÂ·¾¶£¬Ôò±£ÁôÐ­Òé\\,½«ºóÃæµÄË«Ð±¸ÜÂ·¾¶ÕûÀí³É±ê×¼Â·¾¶
+            #ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ç¹²ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð­ï¿½ï¿½\\,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë«Ð±ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É±ï¿½×¼Â·ï¿½ï¿½
             pathString = '\\\\'+re.sub('\\\\\\\\','\\\\',pathString.lstrip('\\\\'))
-    #ÅÐ¶ÏÊÇ·ñÓÐunixÂ·¾¶·Ö¸ô·û£¬ÈôÓÐ¾Í×ª»»
+    #ï¿½Ð¶ï¿½ï¿½Ç·ï¿½ï¿½ï¿½unixÂ·ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¾ï¿½×ªï¿½ï¿½
     if '/' in pathString:
         pathString = re.sub('/','\\\\',pathString)
     return pathString.strip()
+
+
 def help():
-    print('-----------------------------------------------------------------')
-    print('Ê¹ÓÃ·½·¨£ºeasyFile.exe sourceDir desDir fileName fileExName -m/-d/-c')
-    print('easeFile.exe  :  ¹¤¾ßµÄÍêÕûÂ·¾¶£¬ÈôÔÚµ±Ç°Ä¿Â¼ÏÂ¿ÉÒÔ²»Ö¸¶¨Â·¾¶')
-    print('sourceDir   :  ²Ù×÷Â·¾¶')
-    print('desDir     :  Ä¿±êÄ¿Â¼£¬Èô²»´æÔÚ´ËÂ·¾¶Ôò×Ô¶¯´´½¨')
-    print('fileName    :  ÎÄ¼þÃûÖÐ°üº¬´ËÎÄ×Ö')
-    print('fileExName   :  ÎÄ¼þÀ©Õ¹ÃûÎªÕâ¸ö¸ñÊ½')
-    print('-m       :  ¼´Ö´ÐÐmove²Ù×÷ÒÆ¶¯µ½Ä¿±êÄ¿Â¼ÏÂ')
-    print('-d       :  Ö´ÐÐÉ¾³ý²Ù×÷£¬É¾³ýÂú×ãÌõ¼þµÄÎÄ¼þ')
-    print('-c       :  ¸´ÖÆµ½Ä¿±êÄ¿Â¼ÏÂ')
-    print('-----------------------------------------------------------------')
+    print('-'*80)
+    print('Ê¹ï¿½Ã·ï¿½ï¿½ï¿½ï¿½ï¿½easyFile.exe sourceDir desDir fileName fileExName -m/-d/-c')
+    print('easeFile.exe  :  ï¿½ï¿½ï¿½ßµï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½Ç°Ä¿Â¼ï¿½Â¿ï¿½ï¿½Ô²ï¿½Ö¸ï¿½ï¿½Â·ï¿½ï¿½')
+    print('sourceDir   :  ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½')
+    print('desDir     :  Ä¿ï¿½ï¿½Ä¿Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½Â·ï¿½ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½')
+    print('fileName    :  ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½Ð°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½')
+    print('fileExName   :  ï¿½Ä¼ï¿½ï¿½ï¿½Õ¹ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½Ê½')
+    print('-m       :  ï¿½ï¿½Ö´ï¿½ï¿½moveï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½Ä¿Â¼ï¿½ï¿½')
+    print('-d       :  Ö´ï¿½ï¿½É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½')
+    print('-c       :  ï¿½ï¿½ï¿½Æµï¿½Ä¿ï¿½ï¿½Ä¿Â¼ï¿½ï¿½')
+    print('-'*80)
+
+
 def handle(type,action,sourDir,desDir,fileName):
+
     if type == 'N':
         if action == 'copy':
             print('copyFile : from '+sourDir+'\\'+fileName+' to '+desDir+'\\'+re.sub('\\\\|:\\\\','_',sourDir)+'_'+fileName)
@@ -54,25 +59,28 @@ def handle(type,action,sourDir,desDir,fileName):
         else:
             print('deleteFile : '+sourDir+'\\'+fileName)
             os.remove(sourDir+'\\'+fileName)
-    
+
+
 def judgeActionType():
-    actionType = input('ÈôÄ¿±êÎÄ¼þ¼ÐÒÑ´æÔÚÏàÍ¬µÄÎÄ¼þÃû£¬ÊÇ·ñ¸²¸Ç£¿Y/N')
+    actionType = input('ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½ï¿½ï¿½ï¿½ï¿½Í¬ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ñ¸²¸Ç£ï¿½Y/N')
     while actionType.strip() not in ('Y','N'):
-        print('ÎÞÐ§ÊäÈë£¬ÇëÖØÐÂÊäÈë Y or N!!')
-        actionType = input('ÈôÄ¿±êÎÄ¼þ¼ÐÒÑ´æÔÚÏàÍ¬µÄÎÄ¼þÃû£¬ÊÇ·ñ¸²¸Ç£¿Y/N')
+        print('ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ë£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Y or N!!')
+        actionType = input('ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½ï¿½ï¿½ï¿½ï¿½Í¬ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ñ¸²¸Ç£ï¿½Y/N')
     return actionType.strip()
-    
+
+
 def judgeSearchType():
-    type = input('ÊÇ·ñ¾«È·²éÕÒ Y/N')
+    type = input('ï¿½Ç·ï¿½È·ï¿½ï¿½ï¿½ï¿½ Y/N')
     while type.strip() not in ('Y','N'):
-        print('ÎÞÐ§ÊäÈë£¬ÇëÖØÐÂÊäÈë Y or N!!')
-        type = input('ÎÞÐ§ÊäÈë£¬ÇëÊäÈë Y or N!!')
+        print('ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ë£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Y or N!!')
+        type = input('ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ë£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Y or N!!')
     return type.strip()
-    
-def copyFile(sDir,dDir,fName,fExName):
+
+
+def copyFile(sDir,dDir,fName,fExName
     if os.path.exists(sDir):
         if not '\\' in dDir:
-            print('ÓÉÓÚÃ»ÓÐÖ¸¶¨¾ø¶ÔÂ·¾¶£¬½«ÔÚ¹¤¾ßËùÔÚµ±Ç°Ä¿Â¼ÏÂ£¬ÐÂ½¨%sÎÄ¼þ¼Ð´æ·ÅÎÄ¼þ£¡'%(dDir))
+            print('ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½Ç°Ä¿Â¼ï¿½Â£ï¿½ï¿½Â½ï¿½%sï¿½Ä¼ï¿½ï¿½Ð´ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½'%(dDir))
             dDir = os.getcwd()+'\\'+dDir
         if fExName.startswith('.'):
             fExName = fExName.lstrip('.')
@@ -101,8 +109,10 @@ def copyFile(sDir,dDir,fName,fExName):
                     elif searchType == 'Y' and fExName == fileExtenName and fName == currentfileName:
                         handle(copyType,'copy',root,dDir,eachFile)
     else:
-        print('Ô´Â·¾¶ÉèÖÃ´íÎó£¬ÇëÖØÐÂÉèÖÃÔËÐÐ£¡')
+        print('Ô´Â·ï¿½ï¿½ï¿½ï¿½ï¿½Ã´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½')
         sys.exit()
+
+
 def deleteFile(sDir,dDir,fName,fExName):
     if os.path.exists(sDir):
         if fExName.startswith('.'):
@@ -133,12 +143,14 @@ def deleteFile(sDir,dDir,fName,fExName):
                 print('deleteEmptyDiretory : '+root)
                 os.rmdir(root)
     else:
-        print('Ô´Â·¾¶ÉèÖÃ´íÎó£¬ÇëÖØÐÂÉèÖÃÔËÐÐ£¡')
+        print('Ô´Â·ï¿½ï¿½ï¿½ï¿½ï¿½Ã´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½')
         sys.exit()
+
+
 def moveFile(sDir,dDir,fName,fExName):
     if os.path.exists(sDir):
         if not '\\' in dDir:
-            print('ÓÉÓÚÃ»ÓÐÖ¸¶¨¾ø¶ÔÂ·¾¶£¬½«ÔÚ¹¤¾ßËùÔÚµ±Ç°Ä¿Â¼ÏÂ£¬ÐÂ½¨%sÎÄ¼þ¼Ð´æ·ÅÎÄ¼þ£¡'%(dDir))
+            print('ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½Ç°Ä¿Â¼ï¿½Â£ï¿½ï¿½Â½ï¿½%sï¿½Ä¼ï¿½ï¿½Ð´ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½'%(dDir))
             dDir = os.getcwd()+'\\'+dDir
         if fExName.startswith('.'):
             fExName = fExName.lstrip('.')
@@ -171,12 +183,15 @@ def moveFile(sDir,dDir,fName,fExName):
                 print('deleteEmptyDiretory : '+root)
                 os.rmdir(root)
     else:
-        print('Ô´Â·¾¶ÉèÖÃ´íÎó£¬ÇëÖØÐÂÉèÖÃÔËÐÐ£¡')
+        print('Ô´Â·ï¿½ï¿½ï¿½ï¿½ï¿½Ã´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½')
         sys.exit()
+
+
+
 if __name__ == '__main__':
     #paramList = ['easyFile.py','D:/work','F:/test','','c','-c']
     if len(sys.argv) < 6:
-        print('´Ë¹¤¾ßÔËÐÐÊ±ÐèÒª5¸ö²ÎÊý£¬ÇëÖØÐÂÉèÖÃ£¡')
+        print('ï¿½Ë¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Òª5ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã£ï¿½')
         help()
         sys.exit
     elif len(sys.argv) == 6:
@@ -191,13 +206,13 @@ if __name__ == '__main__':
             if delInfo == 'Y':
                 deleteFile(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4])
             else:
-                print('ÓÃ»§È¡ÏûÉ¾³ý²Ù×÷£¡')
+                print('ï¿½Ã»ï¿½È¡ï¿½ï¿½É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½')
                 sys.exit
         else:
-            print('²Ù×÷²ÎÊýÉèÖÃ´íÎó£¬ÇëÖ¸¶¨ -m|-d|-c')
+            print('ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã´ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ -m|-d|-c')
             help()
             sys.exit
     else:
-        print('ÉèÖÃ²ÎÊý¹ý¶à£¬¹¤¾ß×î¶àÖ»ÐèÒª5¸ö²ÎÊý')
+        print('ï¿½ï¿½ï¿½Ã²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½à£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö»ï¿½ï¿½Òª5ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½')
         help()
         sys.exit
