@@ -1,28 +1,31 @@
-#!/usr/bin/python
-#-*-coding: GBK-*-
-#---by sfzhang  2011.6.10---
+# !/usr/bin/python
+# -*-coding: GBK-*-
+# ---by sfzhang  2011.6.10---
 import os
-import re
 import os.path
-import shutil
 import sys
-import code
 import random
-'''½«Ò»¸öÎÄ¼şµÄËùÒÔĞĞ´òÂÒ£¬ÖØĞÂÉú³ÉÒ»¸öÄ¿±êÎÄ¼ş'''
-#½«½Å±¾ËùÔÚÄ¿Â¼ÉèÖÃÎªµ±Ç°Ä¿Â¼
-print(sys.argv[0])
-os.chdir(os.path.dirname(sys.argv[0]))
-source = open('E:\\source.txt','r')
-sourceList = source.readlines()
-print(sourceList)
-aimText = open('E:\\aim.txt','w')
-while(len(sourceList) != 0):
-		#ÔÚÁĞ±í³¤¶È·¶Î§ÄÚ£¬Ëæ»úÑ¡ÔñÒ»¸öÕûÊı
-		tickLineNum = random.randint(0,len(sourceList)-1)
-		#ÕÒµ½Õâ¸öË÷Òı¶ÔÓ¦µÄÔªËØ£¬Ğ´½øÄ¿±êÎÄ¼ş
-		randomLine = sourceList[tickLineNum].strip()
-		print(randomLine)
-		aimText.write(randomLine+'\n')
-		#°ÑÕâ¸öÔªËØ´ÓÁĞ±íÖĞÌŞ³ı
-		sourceList.pop(tickLineNum)
-aimText.close()
+
+
+def main():
+    # ï¿½ï¿½ï¿½Å±ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿Â¼ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½Ç°Ä¿Â¼
+    print(sys.argv[0])
+    os.chdir(os.path.dirname(sys.argv[0]))
+    source = open('E:\\source.txt', 'r')
+    sourceList = source.readlines()
+    print(sourceList)
+    aimText = open('E:\\aim.txt', 'w')
+    while (len(sourceList) != 0):
+        # ï¿½ï¿½ï¿½Ğ±ï¿½ï¿½È·ï¿½Î§ï¿½Ú£ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        tickLineNum = random.randint(0, len(sourceList) - 1)
+        # ï¿½Òµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½Ôªï¿½Ø£ï¿½Ğ´ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½Ä¼ï¿½
+        randomLine = sourceList[tickLineNum].strip()
+        print(randomLine)
+        aimText.write(randomLine + '\n')
+        # ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½Ø´ï¿½ï¿½Ğ±ï¿½ï¿½ï¿½ï¿½Ş³ï¿½
+        sourceList.pop(tickLineNum)
+    aimText.close()
+
+
+if __name__ == "__main__":
+    main()
