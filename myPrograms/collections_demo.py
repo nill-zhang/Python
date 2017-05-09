@@ -19,36 +19,36 @@ def collections_namedtuple():
     b3 = person3(name='xlyang', weight=110.25, age=24, sex='Female')
 
     for i in (a1, b1, a2, b2, a3, b3):
-        print i
+        print(i)
 
-    print "person1._fields: ", person1._fields
+    print("person1._fields: ", person1._fields)
     c1 = person1._make(['lyzhang', 2, 'Female', 10])
-    print "length: %d" % len(c1), c1
-    print "c1._asdict()['name']: ", c1._asdict()['name']
+    print("length: %d" % len(c1), c1)
+    print("c1._asdict()['name']: ", c1._asdict()['name'])
     name, _, _, _, = c1  # namedTuple also support unpacking
-    print "name is: %s" % c1.name
+    print("name is: %s" % c1.name)
     d1 = c1._replace(name='xxxxx')  # return a new namedtuple object with a different field name
-    print "build a new named tuple from c1 with a new name: ", d1
+    print("build a new named tuple from c1 with a new name: ", d1)
     try:
         d1.name = "another guy"
     except AttributeError:
-        print "can not change a named tuple"
+        print("can not change a named tuple")
 
 
 def collections_deque():
     deque_list = deque((i for i in range(5, 15)), maxlen=10)
-    print "deque_list: %s" % deque_list
+    print("deque_list: %s" % deque_list)
     deque_list.extend(tuple("sfzhang is a good guy".split()))
-    print "deque_list: %s" % deque_list
+    print("deque_list: %s" % deque_list)
     deque_list.rotate(2)
-    print "rotate 2 steps to the right: %r" % deque_list
+    print("rotate 2 steps to the right: %r" % deque_list)
     deque_list.rotate(-1)
-    print "rotate 1 step to the left: %r" % deque_list
+    print("rotate 1 step to the left: %r" % deque_list)
     # append one by one remove the first if reaches maxlen
     deque_list.extend(range(300, 320))
-    print "deque_list: %s" % deque_list
+    print("deque_list: %s" % deque_list)
     deque_list.extendleft(['a', 'b', 'c', 'd'])
-    print "deque_list: %s" % deque_list
+    print("deque_list: %s" % deque_list)
 
 
 def collections_counter():
@@ -57,18 +57,18 @@ def collections_counter():
     counter_dict3 = Counter(((i, j)for i, j in zip(['xlyang', 'lyzhang'],
                                                    ('mother', 'daughter'))))
     counter_dict4 = Counter((2, 2, 2, 4, 5, 42, 2, 0.23, 8.7, 4, 5, 0))
-    print "cdict1: %r" % repr(counter_dict1)
-    print "cdict2: %r" % repr(counter_dict2)
-    print counter_dict3
-    print "cdict4 most common: %r" % repr(counter_dict4.most_common(2))
+    print("cdict1: %r" % repr(counter_dict1))
+    print("cdict2: %r" % repr(counter_dict2))
+    print(counter_dict3)
+    print("cdict4 most common: %r" % repr(counter_dict4.most_common(2)))
     counter_dict4.update([1 for i in xrange(10)])
-    print "cdict4 most common: %r" % repr(counter_dict4.most_common(2))
+    print("cdict4 most common: %r" % repr(counter_dict4.most_common(2)))
 
 if __name__ == "__main__":
     collections_deque()
-    print "*"*90
+    print("*"*90)
     collections_namedtuple()
-    print "*" * 90
+    print("*" * 90)
     collections_counter()
 
 
