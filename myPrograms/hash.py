@@ -26,7 +26,7 @@ def count_occurrence_normal(fdir):
         f.close()
 
     for m, n in occur.items():
-        print m, n
+        print(m, n)
 
 
 def count_occurrence_defaultdict(fdir):
@@ -47,10 +47,11 @@ def count_occurrence_defaultdict(fdir):
         f.close()
 
     for m, n in occur.items():
-        print m, n
+        print(m, n)
 
 
 class dict_with_strkey(dict):
+
     """ this is a user-defined dict class using string keys
         if a key lookup fails, the key will be converted to
         its string type and then do the lookup
@@ -84,7 +85,9 @@ class dict_with_strkey(dict):
         # invocation of __contains__
         return key in self.keys() or str(key) in self.keys()
 
+
 def construct_dict():
+
     """ways to construct a dict"""
     dict_a = dict(([i, j] for i in range(1, 6) for j in 'abcde'))
     dict_b = dict([[i, j] for i in range(10, 16) for j in 'abcde'])
@@ -121,9 +124,9 @@ def is_hashable(param):
         try:
             hash(obj)
         except TypeError:
-            print "%s is not hashable and can not be used as a dict key" % repr(obj)
+            print("%s is not hashable and can not be used as a dict key" % repr(obj))
         else:
-            print "%s is hashable" % repr(obj)
+            print("%s is hashable" % repr(obj))
 
 
 if __name__ == "__main__":
@@ -138,23 +141,23 @@ if __name__ == "__main__":
                                   ['2016', 'current year'],
                                   ['2017', 'next year']))
 
-    print "test dict_with_strkey.__missing__"
-    print test_dict[2014]
-    print test_dict['2014']
+    print ("test dict_with_strkey.__missing__")
+    print (test_dict[2014])
+    print (test_dict['2014'])
     try:
-        print test_dict[2011]
+        print(test_dict[2011])
     except KeyError:
-        print "2011 is not a valid key"
+        print("2011 is not a valid key")
 
-    print "test dict_with_strkey.get"
-    print test_dict.get(2015)
-    print test_dict.get(2011)
-    print test_dict.get(2011, 'long long time ago')
+    print("test dict_with_strkey.get")
+    print(test_dict.get(2015))
+    print(test_dict.get(2011))
+    print(test_dict.get(2011, 'long long time ago'))
 
-    print "test dict_with_strkey.__contains__"
-    print '2012' in test_dict
-    print 2012 in test_dict
-    print '2011' in test_dict
+    print("test dict_with_strkey.__contains__")
+    print('2012' in test_dict)
+    print(2012 in test_dict)
+    print('2011' in test_dict)
 
 
 
