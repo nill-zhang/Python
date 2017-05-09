@@ -3,7 +3,6 @@ from flask import Flask
 from flask_pymongo import PyMongo
 import flask
 from pymongo.errors import OperationFailure
-from pprint import pprint
 import sys
 
 
