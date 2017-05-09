@@ -74,7 +74,7 @@ def search_filename_onpattern(directory, regex):
     result_list = []
     for item in os.walk(os.path.abspath(directory)):
         for eachfile in item[2]:
-            if  user_pattern.search(eachfile):
+            if user_pattern.search(eachfile):
                 logging.debug (os.path.join(item[0],user_pattern.sub(r"\033[91m\1\033[00m",eachfile)))
                 result_list.append(os.path.join(item[0],eachfile))
     return result_list

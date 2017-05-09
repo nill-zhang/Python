@@ -7,7 +7,6 @@ class GamersNetwork(object):
         self.data_input = data_input
 
     def create_data_structure(self):
-       
         '''{'john':
                 {'connections' : ['bob', 'mary', 'smith'],
                  '      likes' : ['games of throne', 'angry bird']

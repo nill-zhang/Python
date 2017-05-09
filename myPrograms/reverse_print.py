@@ -16,10 +16,13 @@ grid = [['.', '.', '.', '.', '.', '.'],
         ['O', 'O', 'O', 'O', '.', '.'],
         ['.', 'O', 'O', '.', '.', '.'],
         ['.', '.', '.', '.', '.', '.']]
+
+
 def reverse_pr(ls):
     for column in range(len(ls[0])):
         for row in ls:
-            print row[column],
-        print
+            print(row[column],)
+        print()
 
-reverse_pr(grid)
+if __name__ == "__main__":
+    reverse_pr(grid)
