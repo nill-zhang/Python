@@ -6,7 +6,7 @@ class CountDown(object):
     """a custom class which supports iteration"""
 
     def __init__(self, start):
-        print "\033[1;36m instantiating instance \033[0m"
+        print("\033[1;36m instantiating instance \033[0m")
         self.start = start
 
     def __iter__(self):
