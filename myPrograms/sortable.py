@@ -48,9 +48,9 @@ def get_result_objects():
     result_objects = defaultdict(list)
     for i, j in get_matching_objects():
         result_objects[i].append(j)
-    #pprint.pprint(result_objects)
+    # pprint.pprint(result_objects)
     for i, j in result_objects:
-       #print(i, j)
+       # print(i, j)
        yield dict(zip(("product_name", "listings"), (i, j)))
 
 
@@ -92,5 +92,5 @@ def save_result_object(result_file_dir):
 
 
 if __name__ == "__main__":
-    #save_result_object("results.txt")
+    # save_result_object("results.txt")
     get_result_objects()
