@@ -8,10 +8,17 @@
 """
 import os
 import fnmatch
-for i in os.walk('/etc'):
-    for j in i[2]:
-        if fnmatch.fnmatch(j,'*.conf') or fnmatch.fnmatch(j, '*.cfg') \
-                                          or fnmatch.fnmatch(j,'*.cnf'):
-            # omit symbolic links to match find /etc -type f -iname '*.conf|*.cfg|*.cnf'
-            if not os.path.islink(os.path.join(i[0], j)):
-                print os.path.join(i[0], j)
+
+
+def extract_conf():
+
+    for i in os.walk('/etc'):
+        for j in i[2]:
+            if fnmatch.fnmatch(j,'*.conf') or fnmatch.fnmatch(j, '*.cfg') \
+                                              or fnmatch.fnmatch(j,'*.cnf'):
+                # omit symbolic links to match find /etc -type f -iname '*.conf|*.cfg|*.cnf'
+                if not os.path.islink(os.path.join(i[0], j)):
+                    print(os.path.join(i[0], j))
+
+if __name__ == "__main":
+    extract_conf()
