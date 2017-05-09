@@ -1,12 +1,15 @@
 #!/usr/bin/python
 # created by sfzhang @2016.10.19
 
-''' this program ask user's credentials and check database for his homedir'''
+""" 
+this program ask user's credentials and check database for his homedir
+"""
 
-from __future__ import print_function
 import crypt
 import getpass
-import spwd,pwd,grp
+import spwd
+import pwd
+import grp
 
 def get_user_homedir():
     input_uname = raw_input("please gimme your username:")
