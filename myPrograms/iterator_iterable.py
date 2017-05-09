@@ -22,7 +22,7 @@ class Sentence1(object):
 
 
 def test_sentence1(text):
-    a = Sentence(text)
+    a = Sentence1(text)
     print("%r" % a)
     print(a[3])
     print("self" in a)
