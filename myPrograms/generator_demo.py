@@ -21,23 +21,23 @@ class CountDown(object):
             return r
 
     def __del__(self):
-        print "\033[1;35m destroying instance \033[0m"
+        print("\033[1;35m destroying instance \033[0m")
 
 
 def countdown(number):
-    print "before while"
+    print("before while")
     while number > 0:
-        print "inside while and before yield"
+        print("inside while and before yield")
         yield number
-        print "inside while and after yield"
+        print("inside while and after yield")
         number -= 1
 
 
 if __name__ == "__main__":
     # A = CountDown(10)
     B = countdown(5)
-    print "before for loop"
+    print("before for loop")
     # for i in A:
     #     print i
     for j in B:
-        print "j is %s" % j
+        print("j is %s" % j)
