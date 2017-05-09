@@ -41,23 +41,24 @@ class MultiDimensionalVector(object):
         # we support slicing
         # you can compare the difference between this method and
         # the previous class's __getitem__ method
-        print("index type: %r" % type(index))
+        print(("index type: %r" % type(index)))
         if isinstance(index, slice):
             return type(self)(self._components[index])
         else:
             return type(self)([self._components[index]])
 
+
 if __name__ == "__main__":
     my_cards = CardGame()
     my_cards[2]
-    print("*" * 120)
+    print(("*" * 120))
     a = MultiDimensionalVector((2, 3, 4, 5, 7.7, 9.2, 0.45, 777, 23.43, 0.123, 2.0123, 4.2309))
     # note that we'd better not call a protected attribute(start by single underscore)
     # outside a class, here, we just want to display its content, to check the
     # returned value of a sliced instance is still a instance
     print(a, type(a), a._components, sep="\n")
 
-    print("*" * 120)
+    print(("*" * 120))
     b = a[2:9]
     print(b, type(b), b._components, sep="\n")
 

@@ -45,7 +45,7 @@ class E(C, B):
         C.pong(self)
 
 
-def print_mro(cls):
+def print(_mro(cls):
 
     try:
         clses = (obj.__name__ for obj in cls.__mro__)
@@ -57,14 +57,14 @@ def print_mro(cls):
 if __name__ == "__main__":
     d = D()
     d.ping()
-    print_mro(D)
-    print_mro(E)
+    print(_mro(D))
+    print(_mro(E))
     e = E()
     d.pingpong()
     e.pingpong()
     print(D.__dict__)
-    print_mro(tkinter.Text)
-    print_mro("fefef")
+    print(_mro)(tkinter.Text)
+    print(_mro)("fefef")
     print(dir(d))
     print(dir(B))
 

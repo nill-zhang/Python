@@ -12,12 +12,12 @@ class MyDecorator(object):
     def __call__(self):
         print("inside myDecorator.__call__()")
 
-print '\033[1;36m$\033[0m' * 70
+print('\033[1;36m$\033[0m' * 70)
 
 
 @MyDecorator  # equals a_function = MyDecorator(a_function)
 def a_function():
-    print "inside a_function()"
+    print("inside a_function()")
 
 print("Finished decorating a_function()")
 
@@ -57,7 +57,7 @@ class SubtractionDecorator(object):
 
     def __call__(self, *args, **kwargs):
         print("inside SubtractionDecorator.__call__")
-        print(self.number % self.func(*args, **kwargs)
+        print(self.number % self.func(*args, **kwargs))
 
 
 @SubtractionDecorator

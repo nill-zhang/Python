@@ -11,7 +11,7 @@
    Thus, in this situation,the duplicate container will not change
 
 """
-
+from __future__ import print_function
 
 import copy
 
@@ -46,7 +46,7 @@ def test_instance():
     print("id(c.passenger): %r" % id(instance_c.passenger))
 
     # class methods has different id from instance methods
-    # deep copys of instances share the same references of instance methods
+    # deep copies of instances share the same references of instance methods
     print("id(a.pick_up): %r" % id(instance_a.pick_up), end='\t')
     print("id(b.pick_up): %r" % id(instance_b.pick_up), end='\t')
     print("id(c.pick_up): %r" % id(instance_c.pick_up))
@@ -92,6 +92,9 @@ def test_list():
     print("list_b: %r" % list_b)
     print("list_c: %r" % list_c)
     print("*" * 100)
+
+
+
 if __name__ == "__main__":
     test_list()
     test_instance()

@@ -107,5 +107,5 @@ if __name__ == "__main__":
     #show_pie()
     #show_bar()
     #show_scatter()
-    show_wordcloud("wordcloud.txt")
+    show_word_cloud("wordcloud.txt")
 

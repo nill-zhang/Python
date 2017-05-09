@@ -37,7 +37,6 @@ class BetterCountMissing(object):
 
 
 def main():
-
     missing_count = 0
     keyword_list = ["name", "age", "weight", "Date of Birth", "address"]
     personal_info = (("company", "IFLYTEK"),

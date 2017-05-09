@@ -27,7 +27,7 @@ def test_logging():
     logging.critical("A Critical happened")
     # the first can be a format string, the rest acts as substitutes
     logging.info("This is %s %s", "last", "one")
-    # logging.INFO is 20, Custom Level above 20 will be printed
+    # logging.INFO is 20, Custom Level above 20 will be print(/1)ed
     custom_level = 100
     logging.addLevelName(custom_level, "CUSTOM_LEVEL")
     logging.log(custom_level, "This one is special")
