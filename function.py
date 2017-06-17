@@ -1,12 +1,18 @@
 import inspect
 import pprint
 
-def func(name:str, age: int, *posi, **kword, salary:'int>0'=3000) -> str:
+def func(name:str, age: int, *posi, salary:'int>0'=3000, **kword ) -> str:
    """ func gives some info about itself"""
    pprint.pprint("locals:\n" + locals())
    pprint.pprint("globals:\n" + globals())
    pprint('positional arguments:' + ' '.join(posi))
-   pprint('{}-->{}'.format(*kword.items()))
+   for i in kword.items():
+       pprint('{}-->{}'.format(*i)
+    def newfunc():
+       nonlocal age
+       age += 1
+       return age
+   return newfunc()
 
 
 def func_caller_variants():
