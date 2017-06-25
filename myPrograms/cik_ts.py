@@ -2,6 +2,7 @@ import googlemaps
 import sys
 from collections import OrderedDict
 import openpyxl
+import time
 
 
 def get_distances(locations, odometer, gap=2):
@@ -9,12 +10,9 @@ def get_distances(locations, odometer, gap=2):
     pairs = zip(locations[:-1], locations[1:])
     for pair in pairs:
         distance = get_distance(*pair)
-        print("{}-->{}".format(*pair))
         distance = float(distance.strip(" km"))
-        # todo
-        # there is a bug, if I go from one place to another place more than once
-        # the old value will be overwritten
-        results["{}-->{}".format(*pair)] = [odometer, odometer+distance+gap, distance+gap]
+        # added timestamp to dict key, fixed new route overwrites old route bug
+        results["{}-->{}@".format(*pair) + str(time.time())] = [odometer, odometer+distance+gap, distance+gap]
         odometer += distance + 2
     for k, v in results.items():
         v[0], v[1] = "{:5.0f}".format(v[0]), "{:5.0f}".format(v[1])
@@ -43,6 +41,7 @@ def process_excel(filepath, r):
         # can not write line = [].extend(k.split("-->")+v)
         # because extend method return None
         line = []
+        k = k.split("@")[0]
         line.extend(k.split("-->") + v)
         for j in range(4, 9):
             sheet.cell(row=row, column=j).value = line[j-4]
